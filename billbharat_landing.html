@@ -10,11 +10,17 @@
     <!-- Meta Description (SEO) - Max 160 chars -->
     <meta name="description" content="India's 100% free billing software for small business owners, shopkeepers, and freelancers. Create GST-compliant invoices and manage bills instantly.">
     
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Custom CSS for Gradients, Shadows, and Fonts -->
     <style>
+        /* Import cursive font */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
         /* Set the base theme as requested */
         body {
             background-color: #0B0B0B;
@@ -27,6 +33,11 @@
         /* Use Inter font (Tailwind's default sans-serif) */
         .font-sans {
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Cursive font for logo */
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
         }
 
         /* Hero background with subtle red gradients */
@@ -92,12 +103,10 @@
     <header class="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B0B0B]/80 border-b border-gray-800">
         <nav class="container mx-auto max-w-6xl px-4 h-16 flex justify-between items-center">
             <!-- Logo -->
-            <a href="#" class="text-2xl font-bold text-white flex items-center gap-2">
-                <!-- SVG Logo Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#E50914]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Desi<span class="text-[#E50914]">Bill</span>
+            <a href="#" class="text-2xl font-bold text-white flex items-baseline">
+                <!-- NEW: Font Awesome Icon -->
+                <i class="fa-solid fa-receipt h-7 w-7 text-[#E50914] mr-1.5"></i>
+                Desi<span class="text-[#E50914] font-cursive text-3xl font-bold">Bill</span>
             </a>
             
             <!-- Nav Links (Desktop) -->
@@ -151,7 +160,8 @@
 
         <!-- Invoice Generator Tool Section - Compacted -->
         <section id="invoice-tool" class="py-16 md:py-20 bg-[#111]">
-            <div class="container mx-auto max-w-3xl px-4">
+            <!-- UPDATED: Widened container -->
+            <div class="container mx-auto max-w-4xl px-4">
                 <div class="text-center max-w-2xl mx-auto mb-8">
                     <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
                         Generate Your Free Invoice
@@ -161,8 +171,8 @@
                     </p>
                 </div>
 
-                <!-- Simple Invoice Form - SPACED OUT UI -->
-                <form id="invoice-generator-form" class="soft-shadow-card p-6 rounded-xl space-y-6">
+                <!-- Simple Invoice Form - UPDATED: Compacted vertical spacing -->
+                <form id="invoice-generator-form" class="soft-shadow-card p-6 rounded-xl space-y-4">
                     
                     <!-- Logo Upload -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -192,13 +202,14 @@
                             </label>
                             <input type="file" id="signature-upload" accept="image/*" class="w-full text-sm text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
                             <button type="button" id="remove-signature" class="hidden text-sm text-red-500 hover:text-red-400 mt-2">Remove Signature</button>
-                        </div>
-                        <div class="flex justify-center md:justify-end">
-                            <img id="signature-preview" src="" alt="Your Signature" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
+                            <img id="logo-preview" src="" alt="Your Logo" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
                         </div>
                     </div>
+
+                    <!-- MOVED: Signature Upload section removed from here -->
                     
-                    <div class="border-t border-gray-700 my-6"></div>
+                    <!-- UPDATED: Compacted margin -->
+                    <div class="border-t border-gray-700 my-4"></div>
 
                     <!-- FROM and TO Section Wrapper -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -270,10 +281,11 @@
                     
                     <!-- FIX: Removed duplicated/old sections and dividers -->
 
-                    <div class="border-t border-gray-700 my-6"></div>
+                    <!-- UPDATED: Compacted margin -->
+                    <div class="border-t border-gray-700 my-4"></div>
 
                     <!-- Item Details -->
-                    <div class="pt-2">
+                    <div class="pt-2 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
                         <h3 class="text-base font-semibold text-white flex items-center gap-2 mb-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -310,7 +322,7 @@
                     </div>
                     
                     <!-- Currency & GST Rate Selection -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
                         <div class="col-span-1">
                             <label for="currency" class="block text-sm font-medium text-gray-300 mb-1.5">Currency</label>
                             <select id="currency" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Currency">
@@ -334,11 +346,11 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="border-t border-gray-700 my-6"></div>
+                    <!-- UPDATED: Compacted margin -->
+                    <div class="border-t border-gray-700 my-4"></div>
 
                     <!-- Notes Section -->
-                    <div class="space-y-4">
+                    <div class="space-y-4 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
                         <h3 class="text-base font-semibold text-white flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -351,8 +363,30 @@
                         </div>
                     </div>
 
+                    <!-- NEW: Signature Upload section moved here -->
+                    <!-- UPDATED: Compacted margin -->
+                    <div class="border-t border-gray-700 my-4"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
+                        <div>
+                            <label for="signature-upload" class="flex items-center gap-2 text-sm font-medium text-gray-300 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                </svg>
+                                Your Signature (Optional)
+                            </label>
+                            <input type="file" id="signature-upload" accept="image/*" class="w-full text-sm text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
+                            <button type="button" id="remove-signature" class="hidden text-sm text-red-500 hover:text-red-400 mt-2">Remove Signature</button>
+                        </div>
+                        <div class="flex justify-center md:justify-end">
+                            <img id="signature-preview" src="" alt="Your Signature" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
+                        </div>
+                    </div>
+
+
                     <!-- Total & GST - Spaced Out -->
-                     <div class="border-t border-gray-700 pt-6 mt-6">
+                     <!-- UPDATED: Compacted margin -->
+                     <div class="border-t border-gray-700 pt-4 mt-4">
                         <div class="flex justify-end items-center mb-1.5">
                             <span class="text-gray-400 text-sm">Subtotal:</span>
                             <span class="text-white text-base font-bold ml-4">
