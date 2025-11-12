@@ -237,12 +237,12 @@
                                         <input type="number" id="item-price-1" placeholder="10000" min="0" class="item-price w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg compact-input focus:border-red-500 focus:ring-red-500" aria-label="Item Price">
                                     </div>
                                 </div>
-                                <!-- Remove button will be added here by JS for rows 2-5 -->
+                                <!-- No remove button here. Will be added dynamically for subsequent rows. -->
                             </div>
                         </div>
 
                         <!-- Add more items button -->
-                        <button type="button" id="add-item-btn" class="btn-secondary text-xs text-white py-1.5 px-3 rounded-lg font-medium mt-3 opacity-50 cursor-not-allowed">
+                        <button type="button" id="add-item-btn" class="btn-secondary text-xs text-white py-1.5 px-3 rounded-lg font-medium mt-3">
                             + Add Another Item
                         </button>
                         <p id="item-limit-msg" class="hidden text-xs text-red-500 mt-1">Maximum of 5 items reached.</p>
@@ -493,12 +493,12 @@
     </footer>
 
     <!-- jsPDF Libraries for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf-autotable.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf-autotable.min.js"></script> -->
 
     <!-- JavaScript for Interactivity AND PDF Generation -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // document.addEventListener('DOMContentLoaded', () => { // <-- REMOVED THIS LINE
             const currencySelect = document.getElementById('currency');
             const gstRateSelect = document.getElementById('gst-rate');
             const itemsContainer = document.getElementById('invoice-items-container');
@@ -506,7 +506,7 @@
             const itemLimitMsg = document.getElementById('item-limit-msg');
             const invoiceForm = document.getElementById('invoice-generator-form');
             
-            // Get first item inputs for validation
+            // Unused variables (kept for clarity, though no longer used by checkAddItemButtonState)
             const itemDesc1 = document.getElementById('item-desc-1');
             const itemQty1 = document.getElementById('item-qty-1');
             const itemPrice1 = document.getElementById('item-price-1');
@@ -572,48 +572,41 @@
                 }
             }
 
-            // --- Add / Remove Item Logic ---
+            // --- Add / Remove Item Logic (FIXED: ID Duplication and Validation Logic) ---
             function createItemRow() {
                 if (itemCount >= maxItems) return;
                 
                 itemCount++;
                 const firstItemRow = itemsContainer.querySelector('.item-row');
-                // Clone the first item row and clear input values
+                // Clone the first item row
                 const newItemRow = firstItemRow.cloneNode(true);
                 
-                const newDesc = newItemRow.querySelector('.item-desc');
-                const newQty = newItemRow.querySelector('.item-qty');
-                const newPrice = newItemRow.querySelector('.item-price');
+                // 1. Reset values and update IDs to prevent duplication (CRITICAL FIX)
+                const inputs = newItemRow.querySelectorAll('input'); 
                 
-                newDesc.value = '';
-                newQty.value = '1';
-                newPrice.value = '';
-                
-                // Update IDs/labels
-                newDesc.id = `item-desc-${itemCount}`;
-                newQty.id = `item-qty-${itemCount}`;
-                newPrice.id = `item-price-${itemCount}`;
-                
-                // Since we rely on cloning the first item, we must ensure the inner labels/inputs are correctly linked/updated.
-                const inputs = newItemRow.querySelectorAll('input');
                 inputs.forEach(input => {
-                    const originalId = input.id.replace(/\d+$/, ''); 
-                    const newId = originalId + itemCount;
+                    const baseId = input.id.replace(/\d+$/, ''); // e.g., 'item-desc-'
+                    const newId = baseId + itemCount;
                     
+                    // Update label 'for' attribute
                     const label = newItemRow.querySelector(`label[for="${input.id}"]`);
                     if (label) {
                         label.setAttribute('for', newId);
                     }
+                    
+                    // Update input ID and clear/reset value
                     input.id = newId;
+                    // Check if it's the quantity field and reset to 1, otherwise clear
+                    input.value = (input.classList.contains('item-qty') ? '1' : ''); 
                 });
 
-
-                // Add remove button only if it doesn't already exist
+                // 2. Add remove button (if not already present from cloning a previously added row)
                 let removeBtn = newItemRow.querySelector('.remove-item-btn');
                 if (!removeBtn) {
                      removeBtn = document.createElement('button');
                      removeBtn.type = 'button';
                      removeBtn.textContent = 'Remove Item';
+                     // Ensure the correct class and position
                      removeBtn.className = 'remove-item-btn text-red-500 hover:text-red-400 text-xs mt-3 block';
                      newItemRow.appendChild(removeBtn);
                 }
@@ -622,31 +615,22 @@
                     newItemRow.remove();
                     itemCount--;
                     updateTotals();
-                    checkAddItemButtonState(); // Check state on remove
+                    checkAddItemButtonState();
                 };
                 
                 itemsContainer.appendChild(newItemRow);
-                checkAddItemButtonState(); // Check state on add
+                checkAddItemButtonState();
             }
             
             function checkAddItemButtonState() {
-                // Check if the required fields in the FIRST row are valid
-                const firstItemValid = itemDesc1.value.trim() !== '' && 
-                                       (parseFloat(itemQty1.value) || 0) >= 1 && 
-                                       (parseFloat(itemPrice1.value) || 0) >= 0;
-                
-                if (firstItemValid && itemCount < maxItems) {
-                    addItemBtn.disabled = false;
-                    addItemBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
+                // Simplified validation: only check if max items limit is reached (FUNCTIONAL FIX)
+                if (itemCount >= maxItems) {
                     addItemBtn.disabled = true;
                     addItemBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                }
-                
-                // Also handle the item limit message
-                if (itemCount >= maxItems) {
                     itemLimitMsg.classList.remove('hidden');
                 } else {
+                    addItemBtn.disabled = false;
+                    addItemBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                     itemLimitMsg.classList.add('hidden');
                 }
             }
@@ -694,10 +678,6 @@
             itemsContainer.addEventListener('input', (e) => {
                 if (e.target.matches('.item-qty, .item-price, .item-desc')) {
                     updateTotals();
-                    // Crucial: check button state when the first item's details change
-                    if (e.target.closest('.item-row') === itemsContainer.firstElementChild) {
-                        checkAddItemButtonState();
-                    }
                 }
             });
             
@@ -709,202 +689,184 @@
             checkAddItemButtonState(); // Check button state on load
             
             
-            // --- PDF Generation Script ---
+            // --- HTML Invoice Generation (Replaces PDF) ---
             invoiceForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                
-                // 1. Check for libraries and initialize jsPDF
-                if (!window.jspdf || !window.jspdf.jsPDF) {
-                    console.error("jsPDF library (v2.5.1) not loaded correctly!");
-                    return;
-                }
-                
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // **Crucial Check for AutoTable:** Ensure plugin is loaded
-                if (typeof window.jspdf.autoTable !== 'function') {
-                    console.error("jsPDF-AutoTable plugin (v3.5.23) not loaded or attached correctly!");
-                    return;
-                }
-                
-                // 2. Get Data from Form
+
+                // 1. Gather form data
                 const logoBase64 = localStorage.getItem('billBharatLogo');
                 const yourName = document.getElementById('your-name').value || "Your Business";
                 const yourAddress = document.getElementById('your-address').value;
                 const yourGstin = document.getElementById('your-gstin').value;
-                
+
                 const clientName = document.getElementById('client-name').value || "Client Name";
                 const clientAddress = document.getElementById('client-address').value;
                 const clientGstin = document.getElementById('client-gstin').value;
                 
-                const currencySymbol = document.querySelector('.currency-symbol').innerText;
-                const gstRate = parseFloat(document.getElementById('gst-rate').value);
-                
-                const subtotal = document.getElementById('subtotal-amount').innerText;
-                const gstAmount = document.getElementById('gst-amount').innerText;
-                const total = document.getElementById('total-amount').innerText;
-                
-                // Date and Invoice Number (Simple)
+                const currency = document.getElementById('currency').value;
+                const currencySymbol = currencySymbols[currency] || '₹';
+                const gstRate = parseFloat(document.getElementById('gst-rate').value) || 0;
+
+                const subtotal = parseFloat(document.getElementById('subtotal-amount').innerText) || 0;
+                const gstAmount = parseFloat(document.getElementById('gst-amount').innerText) || 0;
+                const total = parseFloat(document.getElementById('total-amount').innerText) || 0;
+
                 const date = new Date().toLocaleDateString('en-IN');
                 const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
-                
-                let currentY = 15; // Y position tracker
 
-                // --- HEADER & LOGO ---
-                
-                // Add Logo (if it exists)
-                if (logoBase64) {
-                    try {
-                        const imgData = logoBase64;
-                        // Determine type from Base64 prefix
-                        const imgTypeMatch = imgData.match(/^data:image\/(\w+);/);
-                        const imgType = (imgTypeMatch && imgTypeMatch[1]) ? imgTypeMatch[1] : 'jpeg'; 
-                        doc.addImage(imgData, imgType.toUpperCase(), 15, currentY, 30, 15, 'logo', 'NONE', 0);
-                    } catch (error) {
-                        console.error("Error adding logo to PDF:", error);
-                    }
-                }
-                
-                // Add Title and Info Block (Right Aligned)
-                doc.setFontSize(24);
-                doc.setFont('helvetica', 'bold');
-                doc.text("INVOICE", 200, currentY + 5, { align: 'right' });
-                
-                doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                doc.text(`Invoice No: ${invoiceNumber}`, 200, currentY + 12, { align: 'right' });
-                doc.text(`Date: ${date}`, 200, currentY + 17, { align: 'right' });
-
-                currentY += 30; // Move past header area
-
-                // --- FROM and BILL TO ---
-                
-                doc.setDrawColor(50, 50, 50); // Dark grey line
-                doc.line(15, currentY, 200, currentY); 
-                currentY += 5; 
-                
-                doc.setFontSize(10);
-                doc.setFont('helvetica', 'bold');
-                doc.text("INVOICE FROM:", 15, currentY);
-                doc.text("BILL TO:", 110, currentY);
-                currentY += 4;
-                
-                doc.setFont('helvetica', 'normal');
-                let fromBlock = `${yourName}`;
-                if (yourAddress) fromBlock += `\n${yourAddress.replace(/\n/g, ' ')}`;
-                if (yourGstin) fromBlock += `\nGSTIN: ${yourGstin}`;
-                
-                let toBlock = `${clientName}`;
-                if (clientAddress) toBlock += `\n${clientAddress.replace(/\n/g, ' ')}`;
-                if (clientGstin) toBlock += `\nGSTIN: ${clientGstin}`;
-
-                const fromLines = fromBlock.split('\n');
-                const toLines = toBlock.split('\n');
-                const maxLines = Math.max(fromLines.length, toLines.length);
-
-                // Add "From" Details
-                doc.text(fromLines.join('\n'), 15, currentY, { maxWidth: 85 });
-                
-                // Add "To" Details
-                doc.text(toLines.join('\n'), 110, currentY, { maxWidth: 85 });
-                
-                currentY += (maxLines * 4) + 10; // Adjust Y based on max lines
-
-                doc.line(15, currentY, 200, currentY); 
-                currentY += 5; 
-
-                // --- ITEM TABLE ---
-                
-                const tableHead = [['Item Description', 'Qty', 'Price', 'Total']];
-                const tableBody = [];
-                
+                // 2. Build Item Rows HTML
+                let itemsHtml = '';
                 const itemFormRows = document.querySelectorAll('#invoice-items-container .item-row');
                 itemFormRows.forEach(row => {
-                    const desc = row.querySelector('.item-desc').value || 'Service/Product';
-                    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-                    const price = parseFloat(row.querySelector('.item-price').value) || 0;
-                    const rowTotal = (qty * price).toFixed(2);
-                    
-                    if (desc || qty > 0 || price > 0) { // Only add non-empty rows
-                         tableBody.push([desc, qty, `${currencySymbol} ${price.toFixed(2)}`, `${currencySymbol} ${rowTotal}`]);
+                    const desc = (row.querySelector('.item-desc')?.value || '').trim() || 'Service/Product';
+                    const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
+                    const rowTotal = (qty * price);
+
+                    if (desc || qty > 0 || price > 0) {
+                        itemsHtml += `
+                            <tr>
+                                <td>${desc}</td>
+                                <td class="center">${qty}</td>
+                                <td class="right">${currencySymbol} ${price.toFixed(2)}</td>
+                                <td class="right">${currencySymbol} ${rowTotal.toFixed(2)}</td>
+                            </tr>
+                        `;
                     }
                 });
 
-                if (tableBody.length === 0) {
-                     tableBody.push(['No items added.', '', '', '']);
+                if (itemsHtml === '') {
+                    itemsHtml = '<tr><td colspan="4" class="center">No items added.</td></tr>';
                 }
 
-                try {
-                    window.jspdf.autoTable(doc, {
-                        startY: currentY,
-                        head: tableHead,
-                        body: tableBody,
-                        theme: 'striped',
-                        headStyles: { 
-                            fillColor: [229, 9, 20], // Rich Indian Red
-                            textColor: 255, 
-                            fontStyle: 'bold'
-                        }, 
-                        styles: { fontSize: 10, cellPadding: 3, textColor: [0, 0, 0] }, // Black text for readability
-                        alternateRowStyles: { fillColor: [240, 240, 240] },
-                        columnStyles: {
-                            0: { cellWidth: 'auto' },
-                            1: { cellWidth: 20, halign: 'center' },
-                            2: { cellWidth: 30, halign: 'right' },
-                            3: { cellWidth: 30, halign: 'right' }
-                        }
-                    });
-                } catch (error) {
-                     console.error("Error during autoTable call:", error);
-                    return;
-                }
+                // 3. Build Totals Rows HTML
+                let totalsHtml = `
+                    <tr>
+                        <td colspan="2"></td>
+                        <td class="right"><strong>Subtotal</strong></td>
+                        <td class="right">${currencySymbol} ${subtotal.toFixed(2)}</td>
+                    </tr>
+                `;
 
-                if (doc.lastAutoTable && doc.lastAutoTable.finalY) {
-                    currentY = doc.lastAutoTable.finalY + 15; // Get Y pos after table
-                } else {
-                    currentY += 50; 
-                }
-
-                // --- TOTALS BLOCK ---
-                
-                const totalX = 195; // Right-aligned X position
-                doc.setFontSize(12);
-                
-                // Subtotal
-                doc.setFont('helvetica', 'normal');
-                doc.text(`Subtotal:`, totalX - 30, currentY, { align: 'right' });
-                doc.text(`${currencySymbol} ${subtotal}`, totalX, currentY, { align: 'right' });
-                currentY += 7;
-
-                // GST
                 if (gstRate > 0) {
-                    const gstLabel = document.getElementById('gst-label').innerText.replace(':', '');
-                    doc.text(gstLabel, totalX - 30, currentY, { align: 'right' });
-                    doc.text(`${currencySymbol} ${gstAmount}`, totalX, currentY, { align: 'right' });
-                    currentY += 7;
+                    const gstLabel = document.getElementById('gst-label')?.innerText.replace(':', '') || `GST (${(gstRate*100)}%)`;
+                    totalsHtml += `
+                        <tr>
+                            <td colspan="2"></td>
+                            <td class="right">${gstLabel}</td>
+                            <td class="right">${currencySymbol} ${gstAmount.toFixed(2)}</td>
+                        </tr>
+                    `;
                 }
 
-                // Total (Bold and Bigger)
-                doc.setFontSize(14);
-                doc.setFont('helvetica', 'bold');
-                doc.text(`TOTAL:`, totalX - 30, currentY + 2, { align: 'right' });
-                doc.text(`${currencySymbol} ${total}`, totalX, currentY + 2, { align: 'right' });
-                
-                currentY += 20;
-                
-                // --- SIGNATURE/FOOTER ---
-                doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                doc.text("Thank you for your business!", 105, currentY, { align: 'center' });
-                doc.text("Generated by BillBharat - India's Free Billing Tool", 105, currentY + 5, { align: 'center' });
+                totalsHtml += `
+                    <tr class="total">
+                        <td colspan="2"></td>
+                        <td class="right"><strong>TOTAL</strong></td>
+                        <td class="right"><strong>${currencySymbol} ${total.toFixed(2)}</strong></td>
+                    </tr>
+                `;
 
-                // 10. Save PDF
-                doc.save(`Invoice_${clientName.replace(/\s/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`);
+                // 4. Construct Full Invoice HTML
+                const invoiceHtml = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Invoice ${invoiceNumber}</title>
+                        <style>
+                            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; color: #333; }
+                            .container { width: 800px; margin: 20px auto; background-color: #fff; border: 1px solid #ddd; padding: 40px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+                            .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+                            .header-left { max-width: 50%; }
+                            .header-left img { max-width: 150px; max-height: 75px; margin-bottom: 10px; }
+                            .header-right { text-align: right; }
+                            .header-right h1 { margin: 0 0 5px 0; color: #E50914; font-size: 28px; }
+                            .details { display: flex; justify-content: space-between; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
+                            .details div { width: 48%; }
+                            .details h3 { margin: 0 0 5px 0; font-size: 14px; color: #555; }
+                            .details p { margin: 0; line-height: 1.6; white-space: pre-line; }
+                            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                            table th, table td { border: 1px solid #ddd; padding: 10px; font-size: 14px; }
+                            table th { background-color: #E50914; color: #fff; text-align: left; }
+                            table td.center, table th.center { text-align: center; }
+                            table td.right, table th.right { text-align: right; }
+                            .totals table { width: 50%; float: right; }
+                            .totals table td { border: none; padding: 5px 10px; }
+                            .totals table tr.total td { font-size: 18px; border-top: 2px solid #333; }
+                            .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #777; }
+                            @media print {
+                                body { background-color: #fff; }
+                                .container { width: 100%; margin: 0; padding: 0; border: none; box-shadow: none; }
+                                .no-print { display: none; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <div class="header-left">
+                                    ${logoBase64 ? `<img src="${logoBase64}" alt="Business Logo">` : ''}
+                                    <h2>${yourName}</h2>
+                                    <p>${yourAddress.replace(/\n/g, '<br>')}</p>
+                                    ${yourGstin ? `<p><strong>GSTIN:</strong> ${yourGstin}</p>` : ''}
+                                </div>
+                                <div class="header-right">
+                                    <h1>INVOICE</h1>
+                                    <p><strong>Invoice No:</strong> ${invoiceNumber}</p>
+                                    <p><strong>Date:</strong> ${date}</p>
+                                </div>
+                            </div>
+                            <div class="details">
+                                <div>
+                                    <h3>BILL TO:</h3>
+                                    <p><strong>${clientName}</strong></p>
+                                    <p>${clientAddress.replace(/\n/g, '<br>')}</p>
+                                    ${clientGstin ? `<p><strong>GSTIN:</strong> ${clientGstin}</p>` : ''}
+                                </div>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Description</th>
+                                        <th class="center">Qty</th>
+                                        <th class="right">Price</th>
+                                        <th class="right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${itemsHtml}
+                                </tbody>
+                            </table>
+                            <div class="totals">
+                                <table>
+                                    <tbody>
+                                        ${totalsHtml}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <div class="footer">
+                                <p>Thank you for your business!</p>
+                                <p>Generated by BillBharat - India's Free Billing Tool</p>
+                            </div>
+                        </div>
+                        <button onclick="window.print()" class="no-print" style="position: fixed; top: 10px; right: 10px; padding: 10px 20px; background: #E50914; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                            Print Invoice
+                        </button>
+                    </body>
+                    </html>
+                `;
+
+                // 5. Write HTML to current tab
+                document.open();
+                document.write(invoiceHtml);
+                document.close();
             });
             // --- End of PDF Generation Script ---
             
-        });
+        // }); // <-- REMOVED THIS LINE
     </script>
 </body>
 </html>
