@@ -191,20 +191,7 @@
                         </div>
                     </div>
 
-                    <!-- FIX: Added missing Signature Upload section -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                        <div>
-                            <label for="signature-upload" class="flex items-center gap-2 text-sm font-medium text-gray-300 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                                Your Signature (Optional)
-                            </label>
-                            <input type="file" id="signature-upload" accept="image/*" class="w-full text-sm text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
-                            <button type="button" id="remove-signature" class="hidden text-sm text-red-500 hover:text-red-400 mt-2">Remove Signature</button>
-                            <img id="logo-preview" src="" alt="Your Logo" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
-                        </div>
-                    </div>
+                    <!-- FIX: Removed erroneous Signature Upload section -->
 
                     <!-- MOVED: Signature Upload section removed from here -->
                     
@@ -233,7 +220,7 @@
                                     <input type="text" id="your-name" placeholder="e.g., Rohan Designs" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Your Business Name">
                                 </div>
                                 <div>
-                                    <label for="your-contact" class="block text-sm font-medium text-gray-300 mb-1.5">Your Contact (Email/Phone)</label>
+                                    <label for="your-contact" class="block text-sm font-medium text-gray-300 mb-1.5">Your Contact</label>
                                     <input type="text" id="your-contact" placeholder="your@email.com or 98XXXXXX00" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Your Contact Email or Phone">
                                 </div>
                                 <div class="md:col-span-2">
@@ -263,7 +250,7 @@
                                     <input type="text" id="client-name" placeholder="e.g., Priya's Cafe" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Client's Business Name">
                                 </div>
                                 <div>
-                                    <label for="client-contact" class="block text-sm font-medium text-gray-300 mb-1.5">Client's Contact (Email/Phone)</label>
+                                    <label for="client-contact" class="block text-sm font-medium text-gray-300 mb-1.5">Client's Contact</label>
                                     <input type="text" id="client-contact" placeholder="client@email.com or 98XXXXXX00" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Client's Contact Email or Phone">
                                 </div>
                                 <div class="md:col-span-2">
@@ -376,6 +363,8 @@
                                 Your Signature (Optional)
                             </label>
                             <input type="file" id="signature-upload" accept="image/*" class="w-full text-sm text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
+                            <!-- NEW HELPER TEXT -->
+                            <p class="text-xs text-gray-500 mt-1.5">Tip: For best results, use a wide image (e.g., 300px wide by 80px tall). Max 1MB.</p>
                             <button type="button" id="remove-signature" class="hidden text-sm text-red-500 hover:text-red-400 mt-2">Remove Signature</button>
                         </div>
                         <div class="flex justify-center md:justify-end">
