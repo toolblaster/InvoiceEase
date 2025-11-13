@@ -194,13 +194,15 @@
     <main>
 
         <!-- Hero Section - Compacted -->
-        <section class="hero-bg pt-16 pb-20 md:pt-20 md:pb-24">
+        <!-- UPDATED: Made hero section more vertically compact -->
+        <section class="hero-bg pt-8 pb-10 md:pt-12 md:pb-14">
             <div class="container mx-auto max-w-6xl px-4 text-center">
                 <span class="inline-block text-red-500 font-semibold tracking-wide uppercase mb-3 text-sm">
                     Bharat’s Free Billing Partner
                 </span>
                 
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                <!-- UPDATED: h1 font size to 46px -->
+                <h1 class="text-3xl md:text-[46px] font-extrabold text-white mb-4 leading-tight">
                     Simple, Free & Fast Billing Tool for Indian Businesses
                 </h1>
                 
@@ -232,7 +234,8 @@
 
                 <!-- Simple Invoice Form - SPACED OUT UI -->
                 <!-- UPDATED: More compact vertical spacing (space-y-4) -->
-                <form id="invoice-generator-form" class="soft-shadow-card p-6 rounded-xl space-y-4">
+                <!-- UPDATED: Mobile-first padding -->
+                <form id="invoice-generator-form" class="soft-shadow-card p-4 md:p-6 rounded-xl space-y-4">
                     
                     <!-- Logo Upload -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -244,9 +247,12 @@
                                 Your Logo (Optional)
                             </label>
                             <input type="file" id="logo-upload" accept="image/*" class="w-full text-sm text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your logo">
+                            <!-- UPDATED: Added helper text for logo size -->
+                            <p class="text-xs text-gray-500 mt-1.5">Tip: Use a wide logo (e.g., 200px wide). It will be resized to fit.</p>
                             <button type="button" id="remove-logo" class="hidden text-sm text-red-500 hover:text-red-400 mt-2">Remove Logo</button>
                         </div>
-                        <div class="flex justify-center md:justify-end">
+                        <!-- UPDATED: Added fixed size container for logo preview -->
+                        <div class="flex justify-center md:justify-end h-16">
                             <img id="logo-preview" src="" alt="Your Logo" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
                         </div>
                     </div>
@@ -257,8 +263,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                         
                         <!-- FROM Section -->
-                        <!-- UPDATED: Added gradient background and border -->
-                        <div class="space-y-4 bg-gradient-to-br from-gray-800/50 to-gray-800/20 p-5 rounded-xl border border-gray-700">
+                        <!-- UPDATED: Added gradient background and darker border -->
+                        <div class="space-y-4 bg-gradient-to-br from-red-900/20 to-red-900/10 p-5 rounded-xl border border-gray-900">
                             <h3 class="text-base font-semibold text-white flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.092 1.21-.138 2.43-.138 3.662v.513A1.62 1.62 0 0 0 5.12 14.122v4.774c0 .53.43.96.96.96h11.84a.96.96 0 0 0 .96-.96v-4.774a1.62 1.62 0 0 0-.6-1.109v-.513Z" />
@@ -290,8 +296,8 @@
                         </div>
                         
                         <!-- TO Section -->
-                        <!-- UPDATED: Added gradient background and border -->
-                        <div class="space-y-4 bg-gradient-to-br from-red-900/30 to-red-900/10 p-5 rounded-xl border border-red-800/50">
+                        <!-- UPDATED: Added gradient background and darker border -->
+                        <div class="space-y-4 bg-gradient-to-br from-red-900/30 to-red-900/10 p-5 rounded-xl border border-red-900">
                             <h3 class="text-base font-semibold text-white flex items-center gap-2">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -321,8 +327,8 @@
                     </div>
 
                     <!-- Item Details -->
-                    <!-- UPDATED: Added gradient background and border -->
-                    <div class="pt-2 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
+                    <!-- UPDATED: Added gradient background and darker border -->
+                    <div class="pt-2 bg-gradient-to-br from-gray-900 to-red-900/20 p-5 rounded-xl border border-gray-900">
                         <h3 class="text-base font-semibold text-white flex items-center gap-2 mb-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -332,17 +338,21 @@
                         <!-- Container for dynamic items -->
                         <div id="invoice-items-container" class="space-y-4">
                             <!-- Item Row 1 (Template) -->
+                            <!-- UPDATED: Grid changed to col-2 base for mobile, col-4 for desktop -->
                             <div class="item-row p-4 border border-gray-700 rounded-lg bg-black/20">
-                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                    <div class="md:col-span-2">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <!-- UPDATED: Description is full-width (col-span-2) on mobile -->
+                                    <div class="col-span-2 md:col-span-2">
                                         <label for="item-desc-1" class="block text-sm font-medium text-gray-300 mb-1.5">Description</label>
                                         <input type="text" id="item-desc-1" placeholder="Logo Design" class="item-desc w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Item Description">
                                     </div>
-                                    <div>
+                                    <!-- UPDATED: Qty is col-span-1 on mobile -->
+                                    <div class="col-span-1">
                                         <label for="item-qty-1" class="block text-sm font-medium text-gray-300 mb-1.5">Qty</label>
                                         <input type="number" id="item-qty-1" value="1" min="1" class="item-qty w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Item Quantity">
                                     </div>
-                                    <div>
+                                    <!-- UPDATED: Price is col-span-1 on mobile -->
+                                    <div class="col-span-1">
                                         <label for="item-price-1" class="block text-sm font-medium text-gray-300 mb-1.5">Price</label>
                                         <input type="number" id="item-price-1" placeholder="10000" min="0" class="item-price w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Item Price">
                                     </div>
@@ -359,9 +369,10 @@
                     </div>
                     
                     <!-- Currency & GST Rate Selection -->
-                    <!-- UPDATED: Added gradient background and border -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
-                        <div class="col-span-1">
+                    <!-- UPDATED: Added gradient background and darker border -->
+                    <!-- UPDATED: Simplified to grid-cols-2 for all screens -->
+                    <div class="grid grid-cols-2 gap-4 pt-4 bg-gradient-to-br from-gray-900 to-red-900/10 p-5 rounded-xl border border-gray-900">
+                        <div>
                             <label for="currency" class="block text-sm font-medium text-gray-300 mb-1.5">Currency</label>
                             <select id="currency" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Currency">
                                 <option value="INR">INR (₹)</option>
@@ -371,7 +382,7 @@
                                 <option value="CAD">CAD ($)</option>
                             </select>
                         </div>
-                        <div class="col-span-1">
+                        <div>
                             <label for="tax-rate" class="block text-sm font-medium text-gray-300 mb-1.5">Tax Rate</label>
                             <select id="tax-rate" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-sm focus:border-red-500 focus:ring-red-500" aria-label="Tax Rate">
                                 <option value="0">No Tax</option>
@@ -386,8 +397,8 @@
                     </div>
 
                     <!-- Notes Section -->
-                    <!-- UPDATED: Added gradient background and border -->
-                    <div class="space-y-4 bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
+                    <!-- UPDATED: Added gradient background and darker border -->
+                    <div class="space-y-4 bg-gradient-to-br from-gray-900 to-red-900/10 p-5 rounded-xl border border-gray-900">
                         <h3 class="text-base font-semibold text-white flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -401,7 +412,8 @@
                     </div>
 
                     <!-- UPDATED: Signature Section with Tabs -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start bg-gradient-to-br from-gray-900/50 to-gray-900/20 p-5 rounded-xl border border-gray-700">
+                    <!-- UPDATED: Added gradient background and darker border -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start bg-gradient-to-br from-gray-900 to-red-900/10 p-5 rounded-xl border border-gray-900">
                         
                         <!-- Left Column: Controls -->
                         <div>
@@ -536,6 +548,7 @@
         </script>
 
         <!-- Features Section - Compacted -->
+        <!-- UPDATED: Changed to 4-col, 8 cards, and made compact -->
         <section id="features" class="py-16 md:py-20 bg-[#0B0B0B]">
             <div class="container mx-auto max-w-6xl px-4">
                 <div class="text-center max-w-2xl mx-auto mb-12">
@@ -547,75 +560,97 @@
                     </p>
                 </div>
                 
-                <!-- Features Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Features Grid - UPDATED: 4-col, compact cards, new gap -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     
-                    <!-- Feature Card 1: GST Ready -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 1: GST Ready (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.745 3.745 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.745 3.745 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">GST Ready Invoices</h3>
-                        <p class="text-gray-400 text-sm">Generate professional, GST-compliant invoices with CGST/SGST/IGST calculations in seconds.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">GST Ready Invoices</h3>
+                        <p class="text-gray-400 text-xs">Generate GST-compliant invoices with CGST/SGST/IGST calculations in seconds.</p>
                     </div>
                     
-                    <!-- Feature Card 2: Multi-Currency Support -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 2: Multi-Currency Support (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c.502 0 1.001-.026 1.493-.074M12 21c-.502 0-1.001-.026-1.493-.074M12 3a9.004 9.004 0 0 0-8.716 6.747M12 3a9.004 9.004 0 0 1 8.716 6.747M12 3c.502 0 1.001-.026 1.493-.074M12 3c-.502 0-1.001-.026-1.493-.074M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">Multi-Currency Support</h3>
-                        <p class="text-gray-400 text-sm">Bill your international clients in their currency (USD, GBP, AUD, CAD) while keeping your books simple.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">Multi-Currency</h3>
+                        <p class="text-gray-400 text-xs">Bill international clients in USD, GBP, AUD, CAD, and more.</p>
                     </div>
                     
-                    <!-- Feature Card 3: Easy Sharing -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 3: Easy Sharing (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">Easy Sharing</h3>
-                        <p class="text-gray-400 text-sm">Download your PDF, or prepare it to send via Email or share directly on WhatsApp with your client.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">Easy Sharing</h3>
+                        <p class="text-gray-400 text-xs">Download PDF, or send via Email or WhatsApp with your client.</p>
                     </div>
                     
-                    <!-- Feature Card 4: Custom Branding -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 4: Custom Branding (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">Custom Branding</h3>
-                        <p class="text-gray-400 text-sm">Add your own business logo and signature to your invoices to look professional and build client trust.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">Custom Branding</h3>
+                        <p class="text-gray-400 text-xs">Add your business logo and signature to look professional and build trust.</p>
                     </div>
                     
-                    <!-- Feature Card 5: No Hidden Fees -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 5: No Hidden Fees (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L9.568 3Z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 9h.008v.008H6V9Z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">No Hidden Fees. Ever.</h3>
-                        <p class="text-gray-400 text-sm">This tool is 100% free forever. No monthly limits, no restricted features. Just free, simple billing.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">No Hidden Fees</h3>
+                        <p class="text-gray-400 text-xs">100% free forever. No monthly limits, no restricted features. Just free billing.</p>
                     </div>
                     
-                    <!-- Feature Card 6: Mobile Friendly -->
-                    <div class="soft-shadow-card p-5 rounded-xl">
-                        <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-red-900/50 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#E50914]">
+                    <!-- Feature Card 6: Mobile Friendly (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white mb-1.5">Mobile Friendly</h3>
-                        <p class="text-gray-400 text-sm">Send an invoice from your phone, shop, or home computer. It works perfectly on all devices.</p>
+                        <h3 class="text-base font-semibold text-white mb-1">Mobile Friendly</h3>
+                        <p class="text-gray-400 text-xs">Send an invoice from your phone, shop, or home computer. Works on all devices.</p>
+                    </div>
+
+                    <!-- NEW Feature Card 7: Client Management (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372m-1.757-4.128a3.375 3.375 0 0 0-5.714 0m5.714 0a3.375 3.375 0 0 1-5.714 0m5.714 0a6.375 6.375 0 0 0-5.714 0M12 12a3.375 3.375 0 1 0 0-6.75 3.375 3.375 0 0 0 0 6.75Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-white mb-1">Client Management</h3>
+                        <p class="text-gray-400 text-xs">Save client details (Name, GSTIN, Address) to create invoices even faster.</p>
+                    </div>
+
+                    <!-- NEW Feature Card 8: Data & Privacy (Compact) -->
+                    <div class="soft-shadow-card p-4 rounded-xl">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-[#E50914]">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.338-2.34 5.25 5.25 0 0 1 1.033 11.115l.007.001h-8.244Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-white mb-1">Data & Privacy</h3>
+                        <p class="text-gray-400 text-xs">Your billing data is processed securely. We never save your private invoice details.</p>
                     </div>
                     
                 </div>
@@ -635,9 +670,9 @@
                 <!-- Testimonials Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <!-- Testimonial Card 1 -->
-                    <div class="soft-shadow-card p-5 rounded-xl flex flex-col justify-between">
-                        <blockquote class="text-base text-gray-300 italic mb-4">
+                    <!-- Testimonial Card 1 - UPDATED: Compacted -->
+                    <div class="soft-shadow-card p-4 rounded-xl flex flex-col justify-between">
+                        <blockquote class="text-sm text-gray-300 italic mb-4">
                             "Now I can give my clients a proper GST bill in 1 minute, right from my phone. This is a game-changer for my work."
                         </blockquote>
                         <div class="flex items-center mt-3">
@@ -649,9 +684,9 @@
                         </div>
                     </div>
                     
-                    <!-- Testimonial Card 2 - UPDATED -->
-                    <div class="soft-shadow-card p-5 rounded-xl flex flex-col justify-between">
-                        <blockquote class="text-base text-gray-300 italic mb-4">
+                    <!-- Testimonial Card 2 - UPDATED: Compacted -->
+                    <div class="soft-shadow-card p-4 rounded-xl flex flex-col justify-between">
+                        <blockquote class="text-sm text-gray-300 italic mb-4">
                             "As a small shopkeeper, managing GST was a headache. <strong>DesiBill</strong> is so simple. I finally have a proper record of my sales."
                         </blockquote>
                         <div class="flex items-center mt-3">
@@ -663,9 +698,9 @@
                         </div>
                     </div>
                     
-                    <!-- Testimonial Card 3 -->
-                    <div class="soft-shadow-card p-5 rounded-xl flex flex-col justify-between">
-                        <blockquote class="text-base text-gray-300 italic mb-4">
+                    <!-- Testimonial Card 3 - UPDATED: Compacted -->
+                    <div class="soft-shadow-card p-4 rounded-xl flex flex-col justify-between">
+                        <blockquote class="text-sm text-gray-300 italic mb-4">
                             "I tried other 'free' tools, but they all had limits. <strong>DesiBill</strong> is truly free forever. Our small agency runs on it."
                         </blockquote>
                         <div class="flex items-center mt-3">
@@ -1145,6 +1180,15 @@
 
                 const date = new Date().toLocaleDateString('en-IN');
                 const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
+                
+                // UPDATED: Logic for custom vs. default logo
+                let logoHtml = '';
+                if (logoBase64) {
+                    logoHtml = `<img src="${logoBase64}" alt="Business Logo">`;
+                }
+                
+                // UPDATED: Default logo for footer
+                const defaultLogoFooterHtml = '<div style="font-family: \'Inter\', sans-serif; font-size: 16px; font-weight: 700; color: #333; margin-top: 8px;">Desi<span style="font-family: \'Dancing Script\', cursive; font-size: 20px; color: #E50914;">Bill</span></div>';
 
                 // 2. Build Item Rows HTML
                 let itemsHtml = '';
@@ -1237,7 +1281,14 @@
                             .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
                             .header-left { max-width: 50%; }
                             .header-left h2 { font-size: 20px; margin-bottom: 5px; }
-                            .header-left img { max-width: 180px; max-height: 70px; object-fit: contain; margin-bottom: 10px; } /* Logo size */
+                            /* UPDATED: Ensured logo fits well */
+                            .header-left img { 
+                                max-width: 220px; /* Increased width */
+                                max-height: 80px; /* Increased height */
+                                object-fit: contain; /* Ensures logo is not stretched */
+                                margin-bottom: 10px; 
+                                display: block; /* Ensures proper alignment */
+                            } 
                             .header-right { text-align: right; }
                             .header-right h1 { margin: 0 0 5px 0; color: #E50914; font-size: 28px; }
                             /* MODIFIED: Removed flex layout from .details and width from .details div */
@@ -1261,7 +1312,7 @@
                             .signature p { margin-top: 5px; font-size: 12px; color: #555; border-top: 1px solid #ccc; padding-top: 5px; display: inline-block; }
                             .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #777; }
                             
-                            /* NEW: Watermark styles */
+                            /* NEW: Watermark styles - UPDATED to lighter gray */
                             .watermark {
                                 position: absolute;
                                 top: 50%;
@@ -1269,7 +1320,7 @@
                                 transform: translate(-50%, -50%) rotate(-45deg);
                                 font-size: 100px;
                                 font-weight: bold;
-                                color: rgba(229, 9, 20, 0.05); /* Very faint red */
+                                color: rgba(0, 0, 0, 0.04); /* Very faint gray */
                                 white-space: nowrap;
                                 z-index: 1; /* Behind the content */
                                 user-select: none;
@@ -1285,7 +1336,7 @@
                                 .no-print { display: none; }
                                 .watermark {
                                     /* Slightly more visible for print */
-                                    color: rgba(229, 9, 20, 0.07);
+                                    color: rgba(0, 0, 0, 0.06);
                                 }
                             }
                         </style>
@@ -1299,7 +1350,7 @@
                         <div class="container">
                             <div class="header">
                                 <div class="header-left">
-                                    ${logoBase64 ? `<img src="${logoBase64}" alt="Business Logo">` : ''}
+                                    ${logoHtml} <!-- UPDATED: Custom logo here -->
                                     <h2>${yourName}</h2>
                                     ${yourContact ? `<p><strong>Contact:</strong> ${yourContact}</p>` : ''}
                                     <p>${yourAddress.replace(/\n/g, '<br>')}</p>
@@ -1358,8 +1409,9 @@
 
                             <div class="footer">
                                 <p>Thank you for your business!</p>
-                                <!-- UPDATED -->
                                 <p>Generated by DesiBill - India's Free Billing Tool</p>
+                                <!-- UPDATED: Default logo shown in footer only if no custom logo -->
+                                ${!logoBase64 ? defaultLogoFooterHtml : ''}
                             </div>
                         </div>
                         <button onclick="window.print()" class="no-print" style="position: fixed; top: 10px; right: 10px; padding: 10px 20px; background: #E50914; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
@@ -1369,10 +1421,17 @@
                     </html>
                 `;
 
-                // 5. Write HTML to current tab
-                document.open();
-                document.write(invoiceHtml);
-                document.close();
+                // 5. Write HTML to a new tab
+                // UPDATED: Open in new tab for better UX
+                const newWindow = window.open();
+                if (newWindow) {
+                    newWindow.document.open();
+                    newWindow.document.write(invoiceHtml);
+                    newWindow.document.close();
+                } else {
+                    // Fallback or error if pop-up was blocked
+                    console.error("Pop-up blocked. Please allow pop-ups for this site.");
+                }
             });
             // --- End of PDF Generation Script ---
             
