@@ -174,7 +174,6 @@
             <!-- UPDATED: Href for features link -->
             <div class="hidden md:flex items-center space-x-4">
                 <a href="#seo-content" class="text-gray-300 hover:text-white transition-colors text-sm">Features</a>
-                <a href="#testimonials" class="text-gray-300 hover:text-white transition-colors text-sm">Testimonials</a>
                 <a href="#invoice-tool" class="text-gray-300 hover:text-white transition-colors text-sm">Billing Tool</a>
                 <!-- Google Ads Optimization: Recommend making Contact link more prominent for trust -->
                 <!-- <a href="#contact" class="text-gray-300 hover:text-white transition-colors text-sm">Contact Us</a> -->
@@ -204,7 +203,6 @@
                 <div class="flex flex-col space-y-2 p-4">
                     <!-- UPDATED: Href for features link -->
                     <a href="#seo-content" class="mobile-menu-link text-gray-300 hover:text-white transition-colors text-base py-2 px-2 rounded-md">Features</a>
-                    <a href="#testimonials" class="mobile-menu-link text-gray-300 hover:text-white transition-colors text-base py-2 px-2 rounded-md">Testimonials</a>
                     <a href="#invoice-tool" class="mobile-menu-link text-gray-300 hover:text-white transition-colors text-base py-2 px-2 rounded-md">Billing Tool</a>
                     <a href="#invoice-tool" class="btn-primary text-white text-center py-2.5 px-4 rounded-lg font-bold text-base mt-2">
                         Create Invoice Now
@@ -1343,7 +1341,7 @@
                 if (modalContent) {
                     modalContent.innerHTML = ''; // Clear iframe
                 }
-                document.body.style.overflow = 'auto'; // MODIFICATION: Restore scrolling
+                document.body.style.overflow = 'auto'; // Restore scroll
             }
 
             if (modalCloseBtn) {
@@ -1373,6 +1371,8 @@
             if (invoiceForm) {
                 invoiceForm.addEventListener('submit', (e) => {
                     e.preventDefault();
+                    
+                    document.body.style.overflow = 'hidden'; // Hide main scrollbar
 
                     let logoBase64 = null;
                     try {
@@ -1437,20 +1437,14 @@
                     today.setDate(today.getDate() + 15);
                     const dueDate = today.toLocaleDateString('en-IN');
 
-                    // --- MODIFICATION: Default Logo ---
-                    // This is the default icon HTML
-                    const defaultIconHtml = `
-                        <div class="default-logo-icon" style="width: 60px; height: 60px; border: 2px solid #E50914; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #E50914; background-color: #fdf2f2;">
-                            <!-- MODIFICATION: Using Font Awesome icon -->
-                            <i class="fa-solid fa-receipt" style="font-size: 32px; line-height: 1;"></i>
-                        </div>
-                    `;
-                    
-                    // Use the uploaded logo if it exists, otherwise use the default icon
-                    const logoHtmlString = logoBase64 
-                        ? `<img src="${logoBase64}" alt="Business Logo" class="logo">`
-                        : defaultIconHtml;
-                    // --- END MODIFICATION ---
+                    // UPDATED: Logic for custom vs. default logo (using Font Awesome)
+                    let logoHtml = '';
+                    if (logoBase64) {
+                        logoHtml = `<img src="${logoBase64}" alt="Business Logo" class="logo">`;
+                    } else {
+                        // Default Font Awesome icon
+                        logoHtml = `<div class="default-logo-icon"><i class="fa-solid fa-receipt"></i></div>`;
+                    }
                     
                     // UPDATED: Default logo for footer
                     const defaultLogoFooterHtml = '<div style="font-family: \'Inter\', sans-serif; font-size: 16px; font-weight: 700; color: #333; margin-top: 8px;">Desi<span style="font-family: \'Dancing Script\', cursive; font-size: 20px; color: #E50914;">Bill</span></div>';
@@ -1519,7 +1513,7 @@
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
                             <title>Invoice ${invoiceNumber}</title>
-                            <!-- MODIFICATION: Added Font Awesome CSS -->
+                            <!-- NEW: Added Font Awesome for default icon -->
                             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
                             <style>
                                 /* NEW: Import Cursive Font */
@@ -1571,8 +1565,7 @@
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: flex-start;
-                                    /* MODIFICATION: Reduced bottom padding from 30px to 20px */
-                                    padding: 40px 40px 20px;
+                                    padding: 40px 40px 20px; /* MODIFIED: Reduced bottom padding */
                                     border-bottom: 2px solid #f4f4f4;
                                 }
                                 .header-left .logo {
@@ -1580,6 +1573,20 @@
                                     max-height: 70px;
                                     object-fit: contain;
                                     display: block;
+                                }
+                                /* NEW: Default icon styles */
+                                .header-left .default-logo-icon {
+                                    width: 70px;
+                                    height: 70px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    background-color: #f4f4f4;
+                                    border-radius: 8px;
+                                }
+                                .header-left .default-logo-icon i {
+                                    font-size: 32px;
+                                    color: #E50914;
                                 }
                                 .header-left h2 {
                                     margin: 10px 0 0 0;
@@ -1608,30 +1615,39 @@
 
                                 /* From/To Parties */
                                 .invoice-parties {
-                                    /* MODIFICATION: Added more padding and a gap */
-                                    padding: 20px 40px 20px; 
+                                    padding: 20px 40px; /* MODIFIED: Reduced top/bottom padding */
                                     display: flex;
                                     justify-content: space-between;
-                                    gap: 20px; /* Added gap */
+                                    align-items: stretch; /* MODIFIED: Make boxes equal height */
                                 }
-                                /* MODIFICATION: Changed to a class for styling */
-                                .invoice-parties div.party-box {
+                                /* MODIFIED: Card design for From/To */
+                                .party-box {
                                     width: 48%;
-                                    /* MODIFICATION: Added visual card treatment */
-                                    background-color: #f9f9f9;
-                                    border: 1px solid #eee;
+                                    background: #fdfdfd;
+                                    border: 1px solid #eaeaea;
                                     border-radius: 8px;
                                     padding: 15px;
                                 }
-                                .invoice-parties h3 {
+                                .party-box h3 {
                                     font-size: 13px;
-                                    color: #777;
+                                    color: #E50914; /* MODIFIED: Changed color */
                                     font-weight: 500;
-                                    margin-top: 0; /* MODIFICATION */
-                                    margin-bottom: 10px; /* MODIFICATION */
+                                    margin-bottom: 15px; /* MODIFIED: Increased margin */
                                     border-bottom: 1px solid #eee;
                                     padding-bottom: 5px;
                                     text-transform: uppercase;
+                                    text-align: left; /* MODIFIED: Aligned left */
+                                }
+                                /* MODIFIED: Aligned all party info to the right */
+                                .party-box .party-name {
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: #000;
+                                    text-align: right;
+                                    margin-bottom: 10px;
+                                }
+                                .party-box .party-details {
+                                    text-align: right;
                                 }
                                 .invoice-parties p {
                                     font-size: 14px;
@@ -1639,28 +1655,6 @@
                                     white-space: pre-line;
                                     margin: 0;
                                     color: #222;
-                                }
-                                /* NEW: Flex container for details */
-                                .party-details-flex {
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: flex-start; /* Align top */
-                                }
-                                /* NEW: Left column for info */
-                                .party-info-left {
-                                    width: 55%;
-                                }
-                                /* NEW: Right column for name */
-                                .party-info-right {
-                                    width: 40%;
-                                    text-align: right;
-                                }
-                                /* MODIFICATION: Added specific class for party names */
-                                .invoice-parties p.party-name {
-                                    font-size: 16px;
-                                    font-weight: 600;
-                                    color: #000;
-                                    margin-bottom: 0; /* Removed margin-bottom */
                                 }
                                 .invoice-parties p strong {
                                     font-weight: 600;
@@ -1678,21 +1672,21 @@
                                 table.items th, table.items td {
                                     padding: 12px 15px;
                                     text-align: left;
-                                    /* MODIFICATION: Made border slightly darker */
-                                    border-bottom: 1px solid #ddd;
+                                    border-bottom: 1px solid #ddd; /* MODIFIED: Darker border */
                                     font-size: 14px;
                                 }
                                 table.items th {
-                                    /* MODIFICATION: Changed to a dark red gradient and white text */
-                                    background: linear-gradient(to right, #a11d24, #7f1d1d);
+                                    /* MODIFIED: Dark Red Gradient */
+                                    background-image: linear-gradient(to bottom, #c1121f 0%, #9a0f1a 100%);
                                     color: #ffffff;
                                     font-weight: 600;
                                     font-size: 12px;
                                     text-transform: uppercase;
+                                    border-bottom: 1px solid #9a0f1a;
                                 }
-                                /* MODIFICATION: Added zebra striping for item rows */
+                                /* NEW: Zebra striping for table rows */
                                 table.items tbody tr:nth-child(odd) td {
-                                    background-color: #fef6f6; /* A very light, subtle red tint */
+                                    background: #fff8f8;
                                 }
                                 table.items td.right, table.items th.right {
                                     text-align: right;
@@ -1845,10 +1839,8 @@
                                 
                                 <div class="invoice-header">
                                     <div class="header-left">
-                                        <!-- MODIFICATION: This now contains either the logo or default icon -->
-                                        ${logoHtmlString}
-                                        <!-- MODIFICATION: Added conditional margin-top for when default icon is shown -->
-                                        <h2 style="${logoBase64 ? '' : 'margin-top: 10px;'}">${yourName}</h2>
+                                        ${logoHtml}
+                                        <!-- <h2>${yourName}</h2> REMOVED: Name is now in party box -->
                                     </div>
                                     <div class="header-right">
                                         <h1>INVOICE</h1>
@@ -1859,37 +1851,25 @@
                                 </div>
 
                                 <div class="invoice-parties">
-                                    <!-- MODIFICATION: Added flex layout inside party-box -->
+                                    <!-- MODIFIED: Reverted to simple structure, right-aligned -->
                                     <div class="party-box">
                                         <h3>FROM:</h3>
-                                        <div class="party-details-flex">
-                                            <div class="party-info-left">
-                                                <p>
-                                                    ${yourContact ? `${yourContact}<br>` : ''}
-                                                    ${yourAddress.replace(/\n/g, '<br>')}
-                                                    ${yourGstin ? `<br><strong>GSTIN:</strong> ${yourGstin}` : ''}
-                                                </p>
-                                            </div>
-                                            <div class="party-info-right">
-                                                <p class="party-name">${yourName}</p>
-                                            </div>
-                                        </div>
+                                        <p class="party-name">${yourName}</p>
+                                        <p class="party-details">
+                                            ${yourContact ? `${yourContact}<br>` : ''}
+                                            ${yourAddress.replace(/\n/g, '<br>')}
+                                            ${yourGstin ? `<br><strong>GSTIN:</strong> ${yourGstin}` : ''}
+                                        </p>
                                     </div>
-                                    <!-- MODIFICATION: Added flex layout inside party-box -->
+                                    <!-- MODIFIED: Reverted to simple structure, right-aligned -->
                                     <div class="party-box">
                                         <h3>BILL TO:</h3>
-                                        <div class="party-details-flex">
-                                            <div class="party-info-left">
-                                                <p>
-                                                    ${clientContact ? `${clientContact}<br>` : ''}
-                                                    ${clientAddress.replace(/\n/g, '<br>')}
-                                                    ${clientGstin ? `<br><strong>GSTIN:</strong> ${clientGstin}` : ''}
-                                                </p>
-                                            </div>
-                                            <div class="party-info-right">
-                                                <p class="party-name">${clientName}</p>
-                                            </div>
-                                        </div>
+                                        <p class="party-name">${clientName}</p>
+                                        <p class="party-details">
+                                            ${clientContact ? `${clientContact}<br>` : ''}
+                                            ${clientAddress.replace(/\n/g, '<br>')}
+                                            ${clientGstin ? `<br><strong>GSTIN:</strong> ${clientGstin}` : ''}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -1967,7 +1947,6 @@
                         modalContent.appendChild(iframe);
                         modal.classList.remove('hidden');
                         modal.classList.add('flex'); // Use flex for centering
-                        document.body.style.overflow = 'hidden'; // MODIFICATION: Hide body scroll
                     } else {
                         console.error("Modal elements not found. Could not display preview.");
                     }
