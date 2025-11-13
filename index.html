@@ -1341,7 +1341,8 @@
                 if (modalContent) {
                     modalContent.innerHTML = ''; // Clear iframe
                 }
-                document.body.style.overflow = 'auto'; // Restore scroll
+                // Restore main page scroll
+                document.body.style.overflow = '';
             }
 
             if (modalCloseBtn) {
@@ -1372,7 +1373,8 @@
                 invoiceForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     
-                    document.body.style.overflow = 'hidden'; // Hide main scrollbar
+                    // Hide main page scroll
+                    document.body.style.overflow = 'hidden';
 
                     let logoBase64 = null;
                     try {
@@ -1432,15 +1434,15 @@
                     const date = new Date().toLocaleDateString('en-IN');
                     const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
                     
-                    // MODIFIED: Set Due Date to be the same as the Invoice Date
+                    // UPDATED: Due Date is same as Invoice Date
                     const dueDate = date;
 
-                    // UPDATED: Logic for custom vs. default logo (using Font Awesome)
+                    // UPDATED: Logic for custom vs. default logo
                     let logoHtml = '';
                     if (logoBase64) {
                         logoHtml = `<img src="${logoBase64}" alt="Business Logo" class="logo">`;
                     } else {
-                        // Default Font Awesome icon
+                        // Use Font Awesome receipt icon
                         logoHtml = `<div class="default-logo-icon"><i class="fa-solid fa-receipt"></i></div>`;
                     }
                     
@@ -1511,7 +1513,7 @@
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
                             <title>Invoice ${invoiceNumber}</title>
-                            <!-- NEW: Added Font Awesome for default icon -->
+                            <!-- UPDATED: Added Font Awesome for default icon -->
                             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
                             <style>
                                 /* NEW: Import Cursive Font */
@@ -1526,6 +1528,9 @@
                                     color: #333;
                                     -webkit-font-smoothing: antialiased;
                                     -moz-osx-font-smoothing: grayscale;
+                                    /* NEW: Force print background colors */
+                                    -webkit-print-color-adjust: exact !important;
+                                    color-adjust: exact !important;
                                 }
                                 
                                 .invoice-container { 
@@ -1563,7 +1568,7 @@
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: flex-start;
-                                    padding: 40px 40px 20px; /* MODIFIED: Reduced bottom padding */
+                                    padding: 30px 40px 20px; /* Reduced padding */
                                     border-bottom: 2px solid #f4f4f4;
                                 }
                                 .header-left .logo {
@@ -1572,20 +1577,17 @@
                                     object-fit: contain;
                                     display: block;
                                 }
-                                /* NEW: Default icon styles */
+                                /* NEW: Default Icon Style */
                                 .header-left .default-logo-icon {
-                                    width: 70px;
+                                    font-size: 48px;
+                                    color: #E50914;
+                                    width: 70px; /* Match height */
                                     height: 70px;
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
-                                    background-color: #f4f4f4;
-                                    border-radius: 8px;
                                 }
-                                .header-left .default-logo-icon i {
-                                    font-size: 32px;
-                                    color: #E50914;
-                                }
+                                
                                 .header-left h2 {
                                     margin: 10px 0 0 0;
                                     font-size: 20px;
@@ -1613,50 +1615,45 @@
 
                                 /* From/To Parties */
                                 .invoice-parties {
-                                    padding: 20px 40px; /* MODIFIED: Reduced top/bottom padding */
+                                    padding: 20px 40px; /* Reduced padding */
                                     display: flex;
                                     justify-content: space-between;
-                                    align-items: stretch; /* MODIFIED: Make boxes equal height */
+                                    gap: 20px;
                                 }
-                                /* MODIFIED: Card design for From/To */
+                                /* UPDATED: Party Box styling */
                                 .party-box {
                                     width: 48%;
                                     background: #fdfdfd;
-                                    border: 1px solid #eaeaea;
+                                    border: 1px solid #eee;
                                     border-radius: 8px;
                                     padding: 15px;
+                                    /* UPDATED: Aligh all text to right */
+                                    text-align: right; 
                                 }
                                 .party-box h3 {
                                     font-size: 13px;
-                                    color: #E50914; /* MODIFIED: Changed color */
-                                    font-weight: 500;
-                                    margin-bottom: 15px; /* MODIFIED: Increased margin */
-                                    border-bottom: 1px solid #eee;
-                                    padding-bottom: 5px;
-                                    text-transform: uppercase;
-                                    text-align: left; /* MODIFIED: Aligned left */
-                                }
-                                /* MODIFIED: Aligned all party info to the right */
-                                .party-box .party-name {
-                                    font-size: 16px;
+                                    color: #E50914; /* Red title */
                                     font-weight: 600;
-                                    color: #000;
-                                    text-align: right;
+                                    margin-top: 0;
                                     margin-bottom: 10px;
+                                    text-transform: uppercase;
                                 }
-                                .party-box .party-details {
-                                    text-align: right;
-                                }
-                                .invoice-parties p {
+                                .party-box p {
                                     font-size: 14px;
                                     line-height: 1.6;
                                     white-space: pre-line;
-                                    margin: 0;
+                                    margin: 0 0 5px 0;
                                     color: #222;
                                 }
-                                .invoice-parties p strong {
-                                    font-weight: 600;
+                                .party-box p.party-name {
+                                    font-size: 16px;
+                                    font-weight: 700;
                                     color: #000;
+                                    margin-bottom: 8px;
+                                }
+                                .party-box p strong {
+                                    font-weight: 600;
+                                    color: #333;
                                 }
                                 
                                 /* Items Table */
@@ -1666,25 +1663,28 @@
                                 table.items {
                                     width: 100%;
                                     border-collapse: collapse;
+                                    border-radius: 8px; /* Rounded corners for table */
+                                    overflow: hidden; /* Clip gradient */
+                                    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
                                 }
                                 table.items th, table.items td {
                                     padding: 12px 15px;
                                     text-align: left;
-                                    border-bottom: 1px solid #ddd; /* MODIFIED: Darker border */
+                                    border-bottom: 1px solid #eee;
                                     font-size: 14px;
                                 }
+                                /* UPDATED: Dark Red Gradient Header */
                                 table.items th {
-                                    /* MODIFIED: Dark Red Gradient */
-                                    background-image: linear-gradient(to bottom, #c1121f 0%, #9a0f1a 100%);
+                                    background-image: linear-gradient(to bottom, #a10f18, #E50914);
                                     color: #ffffff;
                                     font-weight: 600;
                                     font-size: 12px;
                                     text-transform: uppercase;
-                                    border-bottom: 1px solid #9a0f1a;
+                                    border-bottom: 1px solid #a10f18;
                                 }
-                                /* NEW: Zebra striping for table rows */
-                                table.items tbody tr:nth-child(odd) td {
-                                    background: #fff8f8;
+                                /* UPDATED: Zebra striping for items */
+                                table.items tbody tr:nth-of-type(even) {
+                                    background-color: #fff8f8; /* Very light red */
                                 }
                                 table.items td.right, table.items th.right {
                                     text-align: right;
@@ -1838,7 +1838,6 @@
                                 <div class="invoice-header">
                                     <div class="header-left">
                                         ${logoHtml}
-                                        <!-- <h2>${yourName}</h2> REMOVED: Name is now in party box -->
                                     </div>
                                     <div class="header-right">
                                         <h1>INVOICE</h1>
@@ -1849,21 +1848,21 @@
                                 </div>
 
                                 <div class="invoice-parties">
-                                    <!-- MODIFIED: Reverted to simple structure, right-aligned -->
+                                    <!-- UPDATED: FROM Box -->
                                     <div class="party-box">
                                         <h3>FROM:</h3>
                                         <p class="party-name">${yourName}</p>
-                                        <p class="party-details">
+                                        <p>
                                             ${yourContact ? `${yourContact}<br>` : ''}
                                             ${yourAddress.replace(/\n/g, '<br>')}
                                             ${yourGstin ? `<br><strong>GSTIN:</strong> ${yourGstin}` : ''}
                                         </p>
                                     </div>
-                                    <!-- MODIFIED: Reverted to simple structure, right-aligned -->
+                                    <!-- UPDATED: TO Box -->
                                     <div class="party-box">
                                         <h3>BILL TO:</h3>
                                         <p class="party-name">${clientName}</p>
-                                        <p class="party-details">
+                                        <p>
                                             ${clientContact ? `${clientContact}<br>` : ''}
                                             ${clientAddress.replace(/\n/g, '<br>')}
                                             ${clientGstin ? `<br><strong>GSTIN:</strong> ${clientGstin}` : ''}
