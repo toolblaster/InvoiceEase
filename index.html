@@ -358,20 +358,21 @@
                         <div id="invoice-items-container" class="space-y-3">
                             <!-- Item Row 1 (Template) -->
                             <!-- UPDATED: Grid changed to col-2 base for mobile, col-4 for desktop -->
-                            <div class="item-row p-3 border border-gray-700 rounded-lg bg-black/20">
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                    <!-- UPDATED: Description is full-width (col-span-2) on mobile -->
-                                    <div class="col-span-2 md:col-span-2">
+                            <div class="item-row relative p-3 border border-gray-700 rounded-lg bg-black/20">
+                                <!-- UPDATED: Grid is now 12 columns for finer control -->
+                                <div class="grid grid-cols-12 gap-3 items-end">
+                                    <!-- UPDATED: Description wider on desktop -->
+                                    <div class="col-span-12 md:col-span-6">
                                         <label for="item-desc-1" class="block text-xs font-medium text-gray-300 mb-1.5">Description</label>
                                         <input type="text" id="item-desc-1" placeholder="Logo Design" class="item-desc w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Description">
                                     </div>
-                                    <!-- UPDATED: Qty is col-span-1 on mobile -->
-                                    <div class="col-span-1">
+                                    <!-- UPDATED: Qty narrower on desktop -->
+                                    <div class="col-span-6 md:col-span-3">
                                         <label for="item-qty-1" class="block text-xs font-medium text-gray-300 mb-1.5">Qty</label>
                                         <input type="number" id="item-qty-1" value="1" min="1" class="item-qty w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Item Quantity">
                                     </div>
-                                    <!-- UPDATED: Price is col-span-1 on mobile -->
-                                    <div class="col-span-1">
+                                    <!-- UPDATED: Price narrower on desktop -->
+                                    <div class="col-span-6 md:col-span-3">
                                         <label for="item-price-1" class="block text-xs font-medium text-gray-300 mb-1.5">Price</label>
                                         <input type="number" id="item-price-1" placeholder="10000" min="0" class="item-price w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Price">
                                     </div>
@@ -983,6 +984,7 @@
                     if (taxRate > 0) {
                         const selectedOption = taxRateSelect.options[taxRateSelect.selectedIndex];
                         const taxLabel = selectedOption.text.replace(' @', ''); // "GST @ 5%" becomes "GST 5%"
+                        // FIXED: This is the correct location for this code
                         gstLabelEl.innerText = `${taxLabel}:`;
                         gstRowEl.classList.remove('hidden');
                     } else {
@@ -990,7 +992,7 @@
                     }
                 }
             }
-
+            
             // --- Add / Remove Item Logic (FIXED: ID Duplication and Validation Logic) ---
             function createItemRow() {
                 if (itemCount >= maxItems || !itemsContainer) return;
@@ -1019,16 +1021,60 @@
                     // Check if it's the quantity field and reset to 1, otherwise clear
                     input.value = (input.classList.contains('item-qty') ? '1' : ''); 
                 });
+                
+                // --- NEW: Adjust grid for remove button ---
+                // Find wrappers using a robust query that won't fail
+                const descWrapper = newItemRow.querySelector(`div:has(> #item-desc-${itemCount})`);
+                const qtyWrapper = newItemRow.querySelector(`div:has(> #item-qty-${itemCount})`);
+                const priceWrapper = newItemRow.querySelector(`div:has(> #item-price-${itemCount})`);
+
+                if (descWrapper) {
+                    descWrapper.classList.remove('md:col-span-6');
+                    descWrapper.classList.add('md:col-span-6'); // Stays 6
+                }
+                if (qtyWrapper) {
+                    qtyWrapper.classList.remove('md:col-span-3');
+                    qtyWrapper.classList.add('md:col-span-2'); // Changes to 2
+                    
+                    qtyWrapper.classList.remove('col-span-6');
+                    qtyWrapper.classList.add('col-span-4'); // Mobile span
+                }
+                if (priceWrapper) {
+                    priceWrapper.classList.remove('md:col-span-3');
+                    priceWrapper.classList.add('md:col-span-2'); // Changes to 2
+
+                    priceWrapper.classList.remove('col-span-6');
+                    priceWrapper.classList.add('col-span-4'); // Mobile span
+                }
+                // --- End of grid adjust ---
 
                 // 2. Add remove button (if not already present from cloning a previously added row)
                 let removeBtn = newItemRow.querySelector('.remove-item-btn');
+                let removeBtnWrapper = newItemRow.querySelector('.remove-btn-wrapper');
+
                 if (!removeBtn) {
+                     // Create the button
                      removeBtn = document.createElement('button');
                      removeBtn.type = 'button';
-                     removeBtn.textContent = 'Remove Item';
-                     // Ensure the correct class and position
-                     removeBtn.className = 'remove-item-btn text-red-500 hover:text-red-400 text-sm mt-4 block';
-                     newItemRow.appendChild(removeBtn);
+                     removeBtn.innerHTML = `<i class="fa-solid fa-trash-can w-4 h-4"></i>`; // Font Awesome icon
+                     removeBtn.className = 'remove-item-btn text-red-500 hover:text-red-400 p-2.5 rounded-lg bg-[#0B0B0B] border border-gray-700 w-full flex justify-center items-center'; // Match input style
+
+                     // Create the wrapper div
+                     removeBtnWrapper = document.createElement('div');
+                     // UPDATED: Mobile span 4, Desktop span 2
+                     removeBtnWrapper.className = 'remove-btn-wrapper col-span-4 md:col-span-2 flex items-end';
+                     
+                     // Append button to wrapper
+                     removeBtnWrapper.appendChild(removeBtn);
+
+                     // Append wrapper to the grid
+                     const grid = newItemRow.querySelector('.grid');
+                     if (grid) {
+                        grid.appendChild(removeBtnWrapper);
+                     } else {
+                        // Fallback, though it should find the grid
+                        newItemRow.appendChild(removeBtnWrapper);
+                     }
                 }
                 
                 removeBtn.onclick = () => {
