@@ -96,6 +96,62 @@
              box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
         }
         
+        /* NEW: Styles for Step Indicator */
+        .step-indicator {
+            background-color: transparent;
+            border: none;
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 0 1 auto; /* Don't grow, just take space needed */
+        }
+        .step-indicator-dot {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #444;
+            color: #999;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background-color: #1A1A1A;
+        }
+        .step-indicator-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            color: #999;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+        .step-indicator-line {
+            height: 2px;
+            background-color: #444;
+            flex: 1 1 0%;
+            margin-top: 14px; /* Align with middle of dots */
+            transform: translateY(-50%);
+        }
+
+        /* Active state for indicator */
+        .step-indicator.active-step-indicator .step-indicator-dot {
+            border-color: #E50914;
+            background-color: #E50914;
+            color: #fff;
+        }
+        .step-indicator.active-step-indicator .step-indicator-label {
+            color: #fff;
+        }
+        
+        /* Hide inactive steps */
+        .form-step.hidden {
+            display: none;
+        }
+        
         /* NEW: Style for the drawing canvas */
         #signature-canvas {
             touch-action: none; /* Prevent page scroll while drawing on mobile */
@@ -217,7 +273,7 @@
 
         <!-- Hero Section - Compacted -->
         <!-- UPDATED: Made hero section more vertically compact -->
-        <section class="hero-bg pt-8 pb-10 md:pt-12 md:pb-14">
+        <section class="hero-bg pt-6 pb-8 md:pt-10 md:pb-12"> <!-- UPDATED PADDING -->
             <div class="container mx-auto max-w-6xl px-4 text-center">
                 <span class="inline-block text-red-500 font-semibold tracking-wide uppercase mb-3 text-sm">
                     Bharat’s Free Billing Partner
@@ -243,9 +299,9 @@
 
         <!-- Invoice Generator Tool Section - Compacted -->
         <!-- UPDATED: Widened container -->
-        <section id="invoice-tool" class="py-16 md:py-20 bg-[#111] hero-bg">
+        <section id="invoice-tool" class="py-12 md:py-16 bg-[#111] hero-bg"> <!-- UPDATED PADDING -->
             <div class="container mx-auto max-w-4xl px-4"> <!-- max-w-3xl to max-w-4xl -->
-                <div class="text-center max-w-2xl mx-auto mb-8">
+                <div class="text-center max-w-2xl mx-auto mb-6"> <!-- UPDATED MARGIN -->
                     <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
                         Generate Your Free Invoice
                     </h2>
@@ -259,239 +315,276 @@
                 <!-- UPDATED: Mobile-first padding -->
                 <form id="invoice-generator-form" class="soft-shadow-card p-4 rounded-xl space-y-3">
                     
-                    <!-- Logo Upload -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                        <div>
-                            <label for="logo-upload" class="flex items-center gap-2 text-xs font-medium text-gray-300 mb-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                </svg>
-                                Your Logo (Optional)
-                            </label>
-                            <input type="file" id="logo-upload" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your logo">
-                            <!-- UPDATED: Added helper text for logo size -->
-                            <p class="text-xs text-gray-500 mt-1.5">Tip: Use a wide logo (e.g., 200px wide). It will be resized to fit.</p>
-                            <button type="button" id="remove-logo" class="hidden text-xs text-red-500 hover:text-red-400 mt-2">Remove Logo</button>
+                    <!-- NEW: Step Indicator -->
+                    <div class="flex items-start justify-between mb-4"> <!-- UPDATED MARGIN -->
+                        <div class="flex-1 text-center">
+                            <button type="button" data-step="1" class="step-indicator active-step-indicator w-full">
+                                <span class="step-indicator-dot">1</span>
+                                <span class="step-indicator-label hidden md:block">Details</span>
+                            </button>
                         </div>
-                        <!-- UPDATED: Added fixed size container for logo preview -->
-                        <div class="flex justify-center md:justify-end h-16">
-                            <img id="logo-preview" src="" alt="Your Logo" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
+                        <div class="step-indicator-line"></div>
+                        <div class="flex-1 text-center">
+                            <button type="button" data-step="2" class="step-indicator w-full">
+                                <span class="step-indicator-dot">2</span>
+                                <span class="step-indicator-label hidden md:block">Items</span>
+                            </button>
+                        </div>
+                        <div class="step-indicator-line"></div>
+                        <div class="flex-1 text-center">
+                            <button type="button" data-step="3" class="step-indicator w-full">
+                                <span class="step-indicator-dot">3</span>
+                                <span class="step-indicator-label hidden md:block">Finalize</span>
+                            </button>
                         </div>
                     </div>
+
+                    <!-- NEW: Step Container -->
+                    <div id="steps-container">
+
+                        <!-- NEW: Step 1: Details -->
+                        <div id="step-1" class="form-step" data-step-id="1">
+                            <!-- UPDATED: FROM and TO sections side-by-side -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                
+                                <!-- FROM Section -->
+                                <!-- UPDATED: Added gradient background and darker border -->
+                                <div class="space-y-2 bg-gradient-to-br from-red-900/20 to-red-900/10 p-3 rounded-xl border border-gray-900"> <!-- UPDATED SPACE & PADDING -->
+                                    <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
+                                        FROM (Your Details)
+                                    </h3>
+                                    <!-- UPDATED to a 2-column grid for Name/Contact, and full-width for GSTIN/Address -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"> <!-- UPDATED GAP -->
+                                        <div class="sm:col-span-2">
+                                            <label for="your-name" class="block text-xs font-medium text-gray-300 mb-1">Your Business Name</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="your-name" placeholder="e.g., Rohan Designs" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your Business Name">
+                                        </div>
+                                        <div>
+                                            <label for="your-contact" class="block text-xs font-medium text-gray-300 mb-1">Your Contact</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="your-contact" placeholder="e.g., 98XXXXXX89" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your Contact Email or Phone">
+                                        </div>
+                                        <div>
+                                            <label for="your-gstin" class="block text-xs font-medium text-gray-300 mb-1">Your GSTIN (Optional)</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="your-gstin" placeholder="22AAAAA0000A1Z5" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your GSTIN">
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label for="your-address" class="block text-xs font-medium text-gray-300 mb-1">Your Address (Optional)</label> <!-- UPDATED MARGIN -->
+                                            <textarea id="your-address" rows="2" placeholder="123, Main Street, Mumbai, 400001" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Your Business Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- TO Section -->
+                                <!-- UPDATED: Added gradient background and darker border -->
+                                <div class="space-y-2 bg-gradient-to-br from-red-900/30 to-red-900/10 p-3 rounded-xl border border-red-900"> <!-- UPDATED SPACE & PADDING -->
+                                    <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                      </svg>
+                                      TO (Client's Details)
+                                    </h3>
+                                    <!-- UPDATED to a 2-column grid for Name/Contact, and full-width for GSTIN/Address -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"> <!-- UPDATED GAP -->
+                                        <div class="sm:col-span-2">
+                                            <label for="client-name" class="block text-xs font-medium text-gray-300 mb-1">Client's Business Name</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="client-name" placeholder="e.g., Priya's Cafe" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's Business Name">
+                                        </div>
+                                        <div>
+                                            <label for="client-contact" class="block text-xs font-medium text-gray-300 mb-1">Client's Contact</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="client-contact" placeholder="e.g., 98XXXXXX89" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's Contact Email or Phone">
+                                        </div>
+                                        <div>
+                                            <label for="client-gstin" class="block text-xs font-medium text-gray-300 mb-1">Client's GSTIN (Optional)</label> <!-- UPDATED MARGIN -->
+                                            <input type="text" id="client-gstin" placeholder="27BBBBB1111B1Z9" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's GSTIN">
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label for="client-address" class="block text-xs font-medium text-gray-300 mb-1">Client's Address (Optional)</label> <!-- UPDATED MARGIN -->
+                                            <textarea id="client-address" rows="2" placeholder="456, B wing, Pune, 411001" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Client's Business Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End Step 1 -->
+
+                        <!-- NEW: Step 2: Items -->
+                        <div id="step-2" class="form-step hidden" data-step-id="2">
+                            <!-- Item Details -->
+                            <!-- UPDATED: Added gradient background and darker border -->
+                            <div class="pt-2 bg-gradient-to-br from-gray-900 to-red-900/20 p-3 rounded-xl border border-gray-900"> <!-- UPDATED PADDING -->
+                                <h3 class="text-base font-semibold text-white flex items-center gap-2 mb-2"> <!-- UPDATED MARGIN -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                    </svg>
+                                    Invoice Items (Max 5)
+                                </h3>
+                                <!-- Container for dynamic items -->
+                                <div id="invoice-items-container" class="space-y-2"> <!-- UPDATED SPACE -->
+                                    <!-- Item Row 1 (Template) -->
+                                    <!-- UPDATED: Grid changed to col-2 base for mobile, col-4 for desktop -->
+                                    <div class="item-row relative p-2.5 border border-gray-700 rounded-lg bg-black/20"> <!-- UPDATED PADDING -->
+                                        <!-- UPDATED: Grid is now 12 columns for finer control -->
+                                        <div class="grid grid-cols-12 gap-2.5 items-end"> <!-- UPDATED GAP -->
+                                            <!-- UPDATED: Description wider on desktop -->
+                                            <div class="col-span-12 md:col-span-6">
+                                                <label for="item-desc-1" class="block text-xs font-medium text-gray-300 mb-1">Description</label> <!-- UPDATED MARGIN -->
+                                                <input type="text" id="item-desc-1" placeholder="Logo Design" class="item-desc w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Description">
+                                            </div>
+                                            <!-- UPDATED: Qty narrower on desktop -->
+                                            <div class="col-span-6 md:col-span-3">
+                                                <label for="item-qty-1" class="block text-xs font-medium text-gray-300 mb-1">Qty</label> <!-- UPDATED MARGIN -->
+                                                <input type="number" id="item-qty-1" value="1" min="1" class="item-qty w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Item Quantity">
+                                            </div>
+                                            <!-- UPDATED: Price narrower on desktop -->
+                                            <div class="col-span-6 md:col-span-3">
+                                                <label for="item-price-1" class="block text-xs font-medium text-gray-300 mb-1">Price</label> <!-- UPDATED MARGIN -->
+                                                <input type="number" id="item-price-1" placeholder="10000" min="0" class="item-price w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Price">
+                                            </div>
+                                        </div>
+                                        <!-- No remove button here. Will be added dynamically for subsequent rows. -->
+                                    </div>
+                                </div>
+
+                                <!-- Add more items button -->
+                                <button type="button" id="add-item-btn" class="btn-secondary text-xs text-white py-2 px-3 rounded-lg font-medium mt-2"> <!-- UPDATED MARGIN -->
+                                    + Add Another Item
+                                </button>
+                                <p id="item-limit-msg" class="hidden text-xs text-red-500 mt-2">Maximum of 5 items reached.</p>
+                            </div>
+                        </div> <!-- End Step 2 -->
+
+                        <!-- NEW: Step 3: Finalize -->
+                        <div id="step-3" class="form-step hidden space-y-2.5" data-step-id="3"> <!-- UPDATED SPACE -->
+                            <!-- Logo Upload -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center"> <!-- UPDATED GAP -->
+                                <div>
+                                    <label for="logo-upload" class="flex items-center gap-2 text-xs font-medium text-gray-300 mb-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        Your Logo (Optional)
+                                    </label>
+                                    <input type="file" id="logo-upload" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your logo">
+                                    <!-- UPDATED: Added helper text for logo size -->
+                                    <p class="text-xs text-gray-500 mt-1">Tip: Use a wide logo (e.g., 200px wide). It will be resized to fit.</p> <!-- UPDATED MARGIN -->
+                                    <button type="button" id="remove-logo" class="hidden text-xs text-red-500 hover:text-red-400 mt-1.5">Remove Logo</button> <!-- UPDATED MARGIN -->
+                                </div>
+                                <!-- UPDATED: Added fixed size container for logo preview -->
+                                <div class="flex justify-center md:justify-end h-16">
+                                    <img id="logo-preview" src="" alt="Your Logo" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
+                                </div>
+                            </div>
+                            
+                            <!-- Currency & GST Rate Selection -->
+                            <!-- UPDATED: Added gradient background and darker border -->
+                            <!-- UPDATED: Simplified to grid-cols-2 for all screens -->
+                            <div class="grid grid-cols-2 gap-3 pt-4 bg-gradient-to-br from-gray-900 to-red-900/10 p-3 rounded-xl border border-gray-900"> <!-- UPDATED GAP & PADDING -->
+                                <div>
+                                    <label for="currency" class="block text-xs font-medium text-gray-400 mb-1">Currency</label> <!-- UPDATED MARGIN -->
+                                    <select id="currency" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Currency">
+                                        <option value="INR">INR (₹)</option>
+                                        <option value="USD">USD ($)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                        <option value="AUD">AUD ($)</option>
+                                        <option value="CAD">CAD ($)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="tax-rate" class="block text-xs font-medium text-gray-400 mb-1">Tax Rate</label> <!-- UPDATED MARGIN -->
+                                    <select id="tax-rate" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Tax Rate">
+                                        <option value="0">No Tax</option>
+                                        <option value="0.05">GST @ 5%</option>
+                                        <option value="0.12">GST @ 12%</option>
+                                        <option value="0.18">GST @ 18%</option>
+                                        <option value="0.06">SST @ 6%</option>
+                                        <option value="0.11">PPN @ 11%</option>
+                                        <option value="0.20">VAT @ 20%</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Notes Section -->
+                            <!-- UPDATED: Added gradient background and darker border -->
+                            <div class="space-y-2 bg-gradient-to-br from-gray-900 to-red-900/10 p-3 rounded-xl border border-gray-900"> <!-- UPDATED SPACE & PADDING -->
+                                <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+                                    Notes / Terms (Optional)
+                                </h3>
+                                <div>
+                                    <label for="invoice-notes" class="block text-xs font-medium text-gray-300 mb-1">Add any notes, terms, or bank details.</label> <!-- UPDATED MARGIN -->
+                                    <textarea id="invoice-notes" rows="3" placeholder="e.g., Payment due within 15 days.&#10;Bank: HDFC Bank, A/C: 123456789" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Invoice Notes"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- UPDATED: Signature Section with Tabs -->
+                            <!-- UPDATED: Added gradient background and darker border -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-start bg-gradient-to-br from-gray-900 to-red-900/10 p-3 rounded-xl border border-gray-900"> <!-- UPDATED GAP & PADDING -->
+                                
+                                <!-- Left Column: Controls -->
+                                <div>
+                                    <!-- Tab Buttons -->
+                                    <div class="flex mb-2 border-b border-gray-700"> <!-- UPDATED MARGIN -->
+                                        <button type="button" id="sig-tab-upload" class="sig-tab-btn flex items-center gap-2 py-2 px-3 text-xs font-medium border-b-2 border-red-500 text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" /></svg>
+                                            Upload
+                                        </button>
+                                        <button type="button" id="sig-tab-draw" class="sig-tab-btn flex items-center gap-2 py-2 px-3 text-xs font-medium border-b-2 border-transparent text-gray-400 hover:text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /></svg>
+                                            Draw
+                                        </button>
+                                    </div>
+
+                                    <!-- Upload Panel -->
+                                    <div id="upload-panel">
+                                        <label for="signature-upload" class="flex items-center gap-2 text-xs font-medium text-gray-300 mb-1">
+                                            Your Signature (Optional)
+                                        </label>
+                                        <input type="file" id="signature-upload" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
+                                        <!-- UPDATED: Added helper text -->
+                                        <p class="text-xs text-gray-500 mt-1">Tip: For best results, use a wide image (e.g., 300px wide by 80px tall). Max 1MB.</p> <!-- UPDATED MARGIN -->
+                                        <button type="button" id="remove-signature" class="hidden text-xs text-red-500 hover:text-red-400 mt-1.5">Remove Signature</button> <!-- UPDATED MARGIN -->
+                                    </div>
+
+                                    <!-- Draw Panel (hidden by default) -->
+                                    <div id="draw-panel" class="hidden">
+                                        <label class="block text-xs font-medium text-gray-300 mb-1">Draw your signature in the box:</label> <!-- UPDATED MARGIN -->
+                                        <canvas id="signature-canvas" class="bg-white rounded-md border border-gray-300 cursor-crosshair w-full" width="400" height="150" aria-label="Draw your signature here"></canvas>
+                                        <button type="button" id="clear-signature" class="btn-secondary text-xs text-white py-1.5 px-3 rounded-lg font-medium mt-1.5"> <!-- UPDATED MARGIN -->
+                                            Clear
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Preview -->
+                                <div class="flex justify-center md:justify-end">
+                                    <img id="signature-preview" src="" alt="Your Signature" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
+                                </div>
+                            </div>
+                        </div> <!-- End Step 3 -->
                     
-                    <!-- REMOVED Duplicate Signature Upload -->
+                    </div> <!-- End Steps Container -->
 
-                    <!-- UPDATED: FROM and TO sections side-by-side -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                        
-                        <!-- FROM Section -->
-                        <!-- UPDATED: Added gradient background and darker border -->
-                        <div class="space-y-3 bg-gradient-to-br from-red-900/20 to-red-900/10 p-4 rounded-xl border border-gray-900">
-                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                </svg>
-                                FROM (Your Details)
-                            </h3>
-                            <!-- UPDATED to a 2-column grid for Name/Contact, and full-width for GSTIN/Address -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="sm:col-span-2">
-                                    <label for="your-name" class="block text-xs font-medium text-gray-300 mb-1.5">Your Business Name</label>
-                                    <input type="text" id="your-name" placeholder="e.g., Rohan Designs" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your Business Name">
-                                </div>
-                                <div>
-                                    <label for="your-contact" class="block text-xs font-medium text-gray-300 mb-1.5">Your Contact</label>
-                                    <input type="text" id="your-contact" placeholder="e.g., 98XXXXXX89" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your Contact Email or Phone">
-                                </div>
-                                <div>
-                                    <label for="your-gstin" class="block text-xs font-medium text-gray-300 mb-1.5">Your GSTIN (Optional)</label>
-                                    <input type="text" id="your-gstin" placeholder="22AAAAA0000A1Z5" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Your GSTIN">
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label for="your-address" class="block text-xs font-medium text-gray-300 mb-1.5">Your Address (Optional)</label>
-                                    <textarea id="your-address" rows="2" placeholder="123, Main Street, Mumbai, 400001" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Your Business Address"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- TO Section -->
-                        <!-- UPDATED: Added gradient background and darker border -->
-                        <div class="space-y-3 bg-gradient-to-br from-red-900/30 to-red-900/10 p-4 rounded-xl border border-red-900">
-                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                              </svg>
-                              TO (Client's Details)
-                            </h3>
-                            <!-- UPDATED to a 2-column grid for Name/Contact, and full-width for GSTIN/Address -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="sm:col-span-2">
-                                    <label for="client-name" class="block text-xs font-medium text-gray-300 mb-1.5">Client's Business Name</label>
-                                    <input type="text" id="client-name" placeholder="e.g., Priya's Cafe" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's Business Name">
-                                </div>
-                                <div>
-                                    <label for="client-contact" class="block text-xs font-medium text-gray-300 mb-1.5">Client's Contact</label>
-                                    <input type="text" id="client-contact" placeholder="e.g., 98XXXXXX89" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's Contact Email or Phone">
-                                </div>
-                                <div>
-                                    <label for="client-gstin" class="block text-xs font-medium text-gray-300 mb-1.5">Client's GSTIN (Optional)</label>
-                                    <input type="text" id="client-gstin" placeholder="27BBBBB1111B1Z9" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Client's GSTIN">
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label for="client-address" class="block text-xs font-medium text-gray-300 mb-1.5">Client's Address (Optional)</label>
-                                    <textarea id="client-address" rows="2" placeholder="456, B wing, Pune, 411001" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Client's Business Address"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item Details -->
-                    <!-- UPDATED: Added gradient background and darker border -->
-                    <div class="pt-2 bg-gradient-to-br from-gray-900 to-red-900/20 p-4 rounded-xl border border-gray-900">
-                        <h3 class="text-base font-semibold text-white flex items-center gap-2 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                            Invoice Items (Max 5)
-                        </h3>
-                        <!-- Container for dynamic items -->
-                        <div id="invoice-items-container" class="space-y-3">
-                            <!-- Item Row 1 (Template) -->
-                            <!-- UPDATED: Grid changed to col-2 base for mobile, col-4 for desktop -->
-                            <div class="item-row relative p-3 border border-gray-700 rounded-lg bg-black/20">
-                                <!-- UPDATED: Grid is now 12 columns for finer control -->
-                                <div class="grid grid-cols-12 gap-3 items-end">
-                                    <!-- UPDATED: Description wider on desktop -->
-                                    <div class="col-span-12 md:col-span-6">
-                                        <label for="item-desc-1" class="block text-xs font-medium text-gray-300 mb-1.5">Description</label>
-                                        <input type="text" id="item-desc-1" placeholder="Logo Design" class="item-desc w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Description">
-                                    </div>
-                                    <!-- UPDATED: Qty narrower on desktop -->
-                                    <div class="col-span-6 md:col-span-3">
-                                        <label for="item-qty-1" class="block text-xs font-medium text-gray-300 mb-1.5">Qty</label>
-                                        <input type="number" id="item-qty-1" value="1" min="1" class="item-qty w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Item Quantity">
-                                    </div>
-                                    <!-- UPDATED: Price narrower on desktop -->
-                                    <div class="col-span-6 md:col-span-3">
-                                        <label for="item-price-1" class="block text-xs font-medium text-gray-300 mb-1.5">Price</label>
-                                        <input type="number" id="item-price-1" placeholder="10000" min="0" class="item-price w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 placeholder:text-gray-500" aria-label="Item Price">
-                                    </div>
-                                </div>
-                                <!-- No remove button here. Will be added dynamically for subsequent rows. -->
-                            </div>
-                        </div>
-
-                        <!-- Add more items button -->
-                        <button type="button" id="add-item-btn" class="btn-secondary text-xs text-white py-2 px-3 rounded-lg font-medium mt-3">
-                            + Add Another Item
-                        </button>
-                        <p id="item-limit-msg" class="hidden text-xs text-red-500 mt-2">Maximum of 5 items reached.</p>
-                    </div>
-                    
-                    <!-- Currency & GST Rate Selection -->
-                    <!-- UPDATED: Added gradient background and darker border -->
-                    <!-- UPDATED: Simplified to grid-cols-2 for all screens -->
-                    <div class="grid grid-cols-2 gap-4 pt-4 bg-gradient-to-br from-gray-900 to-red-900/10 p-4 rounded-xl border border-gray-900">
-                        <div>
-                            <label for="currency" class="block text-xs font-medium text-gray-400 mb-1.5">Currency</label>
-                            <select id="currency" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Currency">
-                                <option value="INR">INR (₹)</option>
-                                <option value="USD">USD ($)</option>
-                                <option value="GBP">GBP (£)</option>
-                                <option value="AUD">AUD ($)</option>
-                                <option value="CAD">CAD ($)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="tax-rate" class="block text-xs font-medium text-gray-400 mb-1.5">Tax Rate</label>
-                            <select id="tax-rate" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500" aria-label="Tax Rate">
-                                <option value="0">No Tax</option>
-                                <option value="0.05">GST @ 5%</option>
-                                <option value="0.12">GST @ 12%</option>
-                                <option value="0.18">GST @ 18%</option>
-                                <option value="0.06">SST @ 6%</option>
-                                <option value="0.11">PPN @ 11%</option>
-                                <option value="0.20">VAT @ 20%</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Notes Section -->
-                    <!-- UPDATED: Added gradient background and darker border -->
-                    <div class="space-y-3 bg-gradient-to-br from-gray-900 to-red-900/10 p-4 rounded-xl border border-gray-900">
-                        <h3 class="text-base font-semibold text-white flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-500">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                            </svg>
-                            Notes / Terms (Optional)
-                        </h3>
-                        <div>
-                            <label for="invoice-notes" class="block text-xs font-medium text-gray-300 mb-1.5">Add any notes, terms, or bank details.</label>
-                            <textarea id="invoice-notes" rows="3" placeholder="e.g., Payment due within 15 days.&#10;Bank: HDFC Bank, A/C: 123456789" class="w-full bg-[#0B0B0B] border border-gray-700 text-white rounded-lg p-2.5 text-xs focus:border-red-500 focus:ring-red-500 resize-none placeholder:text-gray-500" aria-label="Invoice Notes"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- UPDATED: Signature Section with Tabs -->
-                    <!-- UPDATED: Added gradient background and darker border -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start bg-gradient-to-br from-gray-900 to-red-900/10 p-4 rounded-xl border border-gray-900">
-                        
-                        <!-- Left Column: Controls -->
-                        <div>
-                            <!-- Tab Buttons -->
-                            <div class="flex mb-3 border-b border-gray-700">
-                                <button type="button" id="sig-tab-upload" class="sig-tab-btn flex items-center gap-2 py-2 px-3 text-xs font-medium border-b-2 border-red-500 text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" /></svg>
-                                    Upload
-                                </button>
-                                <button type="button" id="sig-tab-draw" class="sig-tab-btn flex items-center gap-2 py-2 px-3 text-xs font-medium border-b-2 border-transparent text-gray-400 hover:text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /></svg>
-                                    Draw
-                                </button>
-                            </div>
-
-                            <!-- Upload Panel -->
-                            <div id="upload-panel">
-                                <label for="signature-upload" class="flex items-center gap-2 text-xs font-medium text-gray-300 mb-1">
-                                    Your Signature (Optional)
-                                </label>
-                                <input type="file" id="signature-upload" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#E50914] file:text-white hover:file:bg-red-700 cursor-pointer" aria-label="Upload your signature">
-                                <!-- UPDATED: Added helper text -->
-                                <p class="text-xs text-gray-500 mt-1.5">Tip: For best results, use a wide image (e.g., 300px wide by 80px tall). Max 1MB.</p>
-                                <button type="button" id="remove-signature" class="hidden text-xs text-red-500 hover:text-red-400 mt-2">Remove Signature</button>
-                            </div>
-
-                            <!-- Draw Panel (hidden by default) -->
-                            <div id="draw-panel" class="hidden">
-                                <label class="block text-xs font-medium text-gray-300 mb-1.5">Draw your signature in the box:</label>
-                                <canvas id="signature-canvas" class="bg-white rounded-md border border-gray-300 cursor-crosshair w-full" width="400" height="150"></canvas>
-                                <button type="button" id="clear-signature" class="btn-secondary text-xs text-white py-1.5 px-3 rounded-lg font-medium mt-2">
-                                    Clear
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Right Column: Preview -->
-                        <div class="flex justify-center md:justify-end">
-                            <img id="signature-preview" src="" alt="Your Signature" class="hidden max-h-16 p-1 bg-white rounded-md object-contain">
-                        </div>
-                    </div>
 
                     <!-- Total & GST - Spaced Out -->
                     <!-- UPDATED: Compacted margin -->
-                     <div class="border-t border-gray-700 pt-6 mt-4">
-                        <div class="flex justify-end items-center mb-1.5">
+                     <div class="border-t border-gray-700 pt-4 mt-3"> <!-- UPDATED PADDING & MARGIN -->
+                        <div class="flex justify-end items-center mb-1"> <!-- UPDATED MARGIN -->
                             <span class="text-gray-400 text-sm">Subtotal:</span>
                             <span class="text-white text-base font-bold ml-4">
                                 <span class="currency-symbol">₹</span><span id="subtotal-amount">0.00</span>
                             </span>
                         </div>
-                         <div id="gst-row" class="hidden flex justify-end items-center mb-2">
+                         <div id="gst-row" class="hidden flex justify-end items-center mb-1.5"> <!-- UPDATED MARGIN -->
                             <span id="gst-label" class="text-gray-400 text-sm">Tax:</span>
                             <span class="text-white text-base font-bold ml-4">
                                 <span class="currency-symbol">₹</span><span id="gst-amount">0.00</span>
                             </span>
                         </div>
-                        <div class="flex justify-end items-center border-t border-gray-600 pt-2.5">
+                        <div class="flex justify-end items-center border-t border-gray-600 pt-2"> <!-- UPDATED PADDING -->
                             <span class="text-white text-lg font-bold">Total:</span>
                             <span class="text-red-500 text-xl font-extrabold ml-4">
                                 <span class="currency-symbol">₹</span><span id="total-amount">0.00</span>
@@ -500,8 +593,18 @@
                     </div>
 
                     <!-- Generate Button -->
-                    <div class="text-center pt-4">
-                        <button type="submit" class="btn-primary text-white text-base font-bold py-3 px-10 rounded-lg w-full md:w-[35%]">
+                    <!-- UPDATED: Replaced with dynamic nav buttons -->
+                    <div class="flex justify-between items-center pt-4 mt-3 border-t border-gray-700"> <!-- UPDATED PADDING & MARGIN -->
+                        <button type="button" id="prev-step-btn" class="btn-secondary text-white text-base font-bold py-3 px-8 rounded-lg hidden">
+                            Back
+                        </button>
+                        
+                        <button type="button" id="next-step-btn" class="btn-primary text-white text-base font-bold py-3 px-8 rounded-lg ml-auto">
+                            Next
+                        </button>
+                        
+                        <!-- This is the original submit button, now with an ID and hidden by default -->
+                        <button type="submit" id="generate-pdf-btn" class="btn-primary text-white text-base font-bold py-3 px-10 rounded-lg w-full md:w-auto hidden ml-auto">
                             Generate PDF Invoice
                         </button>
                     </div>
@@ -510,9 +613,9 @@
         </section>
 
         <!-- NEW: Billing Guide Section (Moved) -->
-        <section id="billing-guide" class="py-16 md:py-20 bg-[#0B0B0B] hero-bg">
+        <section id="billing-guide" class="py-12 md:py-16 bg-[#0B0B0B] hero-bg"> <!-- UPDATED PADDING -->
             <div class="container mx-auto max-w-6xl px-4">
-                <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="text-center max-w-3xl mx-auto mb-10"> <!-- UPDATED MARGIN -->
                     <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
                         Master Your Billing: A Guide for Small Businesses
                     </h2>
@@ -521,7 +624,7 @@
                     </p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"> <!-- UPDATED GAP -->
                     
                     <!-- Guide Card 1 -->
                     <div class="soft-shadow-card p-3 rounded-xl h-full">
@@ -572,11 +675,11 @@
         </section>
 
         <!-- UPDATED: SEO Content Section (Now includes How-To and FAQ) -->
-        <section id="seo-content" class="py-16 md:py-20 bg-[#111] hero-bg">
+        <section id="seo-content" class="py-12 md:py-16 bg-[#111] hero-bg"> <!-- UPDATED PADDING -->
             <div class="container mx-auto max-w-6xl px-4"> <!-- Widened container to match other sections -->
                 
                 <!-- "Why Us?" Sub-section -->
-                <div class="text-center max-w-3xl mx-auto mb-12"> <!-- Centered title and added subtitle -->
+                <div class="text-center max-w-3xl mx-auto mb-10"> <!-- UPDATED MARGIN -->
                     <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
                         The Best Free GST Billing Software for India's Small Businesses
                     </h2>
@@ -585,7 +688,7 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> <!-- UPDATED GAP -->
                     <!-- Card 1: For Every Indian Business -->
                     <div class="soft-shadow-card p-3 rounded-xl h-full"> <!-- UPDATED: p-4 to p-3 -->
                         <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2"> <!-- UPDATED: h-10 w-10 to h-8 w-8, mb-3 to mb-2 -->
@@ -654,13 +757,13 @@
                 </div>
 
                 <!-- NEW: "How-To" Sub-section -->
-                <div class="mt-16 md:mt-24">
-                    <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="mt-12 md:mt-16"> <!-- UPDATED MARGIN -->
+                    <div class="text-center max-w-3xl mx-auto mb-10"> <!-- UPDATED MARGIN -->
                         <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
                             Create Your Free Invoice in 30 Seconds
                         </h3>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> <!-- UPDATED GAP -->
                         <!-- Step 1 Card -->
                         <div class="soft-shadow-card p-3 rounded-xl h-full">
                             <div class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-900/50 mb-2">
@@ -695,14 +798,14 @@
                 </div>
 
                 <!-- NEW: "FAQ" Sub-section -->
-                <div class="mt-16 md:mt-24">
-                    <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="mt-12 md:mt-16"> <!-- UPDATED MARGIN -->
+                    <div class="text-center max-w-3xl mx-auto mb-10"> <!-- UPDATED MARGIN -->
                         <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
                             Frequently Asked Questions
                         </h3>
                     </div>
                     <!-- UPDATED: Reduced gaps and padding -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-3 max-w-4xl mx-auto"> <!-- UPDATED GAP -->
                         
                         <!-- FAQ 1 -->
                         <div class="py-1">
@@ -783,11 +886,11 @@
     </main>
 
     <!-- RESTORED: Footer - Compacted -->
-    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+    <footer class="bg-gray-900 border-t border-gray-800 py-10"> <!-- UPDATED PADDING -->
         <div class="container mx-auto max-w-6xl px-4">
             
             <!-- Trust Symbols -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-5"> <!-- UPDATED MARGIN -->
                 <span class="flex items-center gap-2 text-sm font-medium text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -806,7 +909,7 @@
             </div>
             
             <!-- Footer Links -->
-            <div class="flex justify-center items-center space-x-4 mb-4">
+            <div class="flex justify-center items-center space-x-4 mb-3"> <!-- UPDATED MARGIN -->
                  <!-- 
                     Google Ads Optimization: 
                     This link MUST lead to a real page. 
@@ -930,6 +1033,15 @@
             const modalCloseBtn = document.getElementById('modal-close-btn');
             const modalPrintBtn = document.getElementById('modal-print-btn');
             
+            // NEW: Step Wizard Elements
+            let currentStep = 1;
+            const totalSteps = 3;
+            const steps = document.querySelectorAll('.form-step');
+            const stepIndicators = document.querySelectorAll('.step-indicator');
+            const prevStepBtn = document.getElementById('prev-step-btn');
+            const nextStepBtn = document.getElementById('next-step-btn');
+            const generatePdfBtn = document.getElementById('generate-pdf-btn');
+            
             const logoStorageKey = 'billBharatLogo'; // Kept old key to preserve user's logo
             const signatureStorageKey = 'billBharatSignature'; // Kept old key
             let sigMode = 'upload'; // NEW: Track current mode
@@ -945,6 +1057,52 @@
                 'AUD': '$',
                 'CAD': '$'
             };
+
+            // NEW: Step Wizard Function
+            function showStep(stepNumber) {
+                if (stepNumber < 1 || stepNumber > totalSteps) return;
+                currentStep = stepNumber;
+
+                // 1. Hide all steps
+                steps.forEach(step => {
+                    step.classList.add('hidden');
+                });
+                // 2. Show current step
+                const currentStepEl = document.querySelector(`.form-step[data-step-id="${currentStep}"]`);
+                if (currentStepEl) {
+                    currentStepEl.classList.remove('hidden');
+                }
+
+                // 3. Update step indicators
+                stepIndicators.forEach(indicator => {
+                    const indicatorStep = parseInt(indicator.dataset.step);
+                    if (indicatorStep === currentStep) {
+                        indicator.classList.add('active-step-indicator');
+                    } else {
+                        indicator.classList.remove('active-step-indicator');
+                    }
+                });
+
+                // 4. Update navigation buttons
+                if (prevStepBtn && nextStepBtn && generatePdfBtn) {
+                    if (currentStep === 1) {
+                        // First step
+                        prevStepBtn.classList.add('hidden');
+                        nextStepBtn.classList.remove('hidden');
+                        generatePdfBtn.classList.add('hidden');
+                    } else if (currentStep === totalSteps) {
+                        // Last step
+                        prevStepBtn.classList.remove('hidden');
+                        nextStepBtn.classList.add('hidden');
+                        generatePdfBtn.classList.remove('hidden');
+                    } else {
+                        // Middle step
+                        prevStepBtn.classList.remove('hidden');
+                        nextStepBtn.classList.remove('hidden');
+                        generatePdfBtn.classList.add('hidden');
+                    }
+                }
+            }
 
             function updateTotals() {
                 // Check if elements exist before proceeding
@@ -1369,10 +1527,35 @@
                 addItemBtn.addEventListener('click', createItemRow);
             }
             
+            // --- NEW: Step Wizard Event Listeners ---
+            if (nextStepBtn) {
+                nextStepBtn.addEventListener('click', () => {
+                    showStep(currentStep + 1);
+                });
+            }
+            
+            if (prevStepBtn) {
+                prevStepBtn.addEventListener('click', () => {
+                    showStep(currentStep - 1);
+                });
+            }
+            
+            stepIndicators.forEach(indicator => {
+                indicator.addEventListener('click', (e) => {
+                    // Find the button element in case the user clicks the dot or label
+                    const targetButton = e.target.closest('.step-indicator');
+                    if (targetButton) {
+                        const targetStep = parseInt(targetButton.dataset.step);
+                        showStep(targetStep);
+                    }
+                });
+            });
+
             loadLogo(); // Load logo from localStorage on page load
             loadSignature(); // Load signature from localStorage
             updateTotals(); // Initial calculation
             checkAddItemButtonState(); // Check button state on load
+            showStep(1); // NEW: Initialize the wizard on step 1
             
             
             // --- NEW: Modal Logic ---
